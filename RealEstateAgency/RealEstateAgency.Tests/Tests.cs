@@ -1,49 +1,42 @@
 using RealEstateAgency.Domain.Data;
-using RealEstateAgency.Domain.Entities;
 using RealEstateAgency.Domain.Enums;
-using Xunit;
 
 namespace RealEstateAgency.Tests;
 
 /// <summary>
-/// Набор тестов, проверяющих корректность LINQ-запросов к данным агентства
+/// Набор тестов для проверки выборок из данных RealEstateSeed
 /// </summary>
-public class RealEstateQueriesTests(RealEstateSeed fixture) : IClassFixture<RealEstateSeed>
+public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<RealEstateSeed>
 {
-    private readonly RealEstateSeed _fixture;    
-
     /// <summary>
-    ///  Вывести всех продавцов, оставивших заявки за заданный период
+    ///  Получение всех продавцов, оставивших заявки за заданный период
     /// </summary>
     [Fact]
-    public void GetSellersInPeriod_ShouldReturnCorrectClients()
+    public void GetSellersByPeriod()
     {
-        // Arrange
-        var requests = _fixture.Seed.Requests;
-        var start = new DateTime(2025, 9, 15);
-        var end = new DateTime(2025, 9, 30);
+        // arrange
+        var from = new DateTime(2025, 9, 17);
+        var to = new DateTime(2025, 9, 26);
 
-        // Act
-        var sellers = requests
-            .Where(r => r.Type == RequestType.Sell && r.DateCreated >= start && r.DateCreated <= end)
+        // act
+        var sellers = testData.Requests
+            .Where(r => r.Type == RequestType.Sell && r.DateCreated >= from && r.DateCreated <= to)
             .Select(r => r.Client.FullName)
             .Distinct()
             .ToList();
 
-        // Assert
+        // assert
         Assert.NotEmpty(sellers);
-        Assert.All(sellers, name => Assert.False(string.IsNullOrWhiteSpace(name)));
+        Assert.All(sellers, s => Assert.False(string.IsNullOrWhiteSpace(s)));
     }
 
     /// <summary>
-    ///  Вывести топ 5 клиентов по количеству заявок (отдельно на покупку и продажу)
+    ///  Получение топ-5 клиентов по количеству заявок (на покупку)
     /// </summary>
     [Fact]
-    public void GetTop5ClientsByRequestType_ShouldReturnTopClients()
+    public void GetTop5BuyersByRequests()
     {
-        var requests = fixture.Seed.Requests;
-
-        var topBuyers = requests
+        var topBuyers = testData.Requests
             .Where(r => r.Type == RequestType.Buy)
             .GroupBy(r => r.Client.FullName)
             .Select(g => new { Client = g.Key, Count = g.Count() })
@@ -51,7 +44,17 @@ public class RealEstateQueriesTests(RealEstateSeed fixture) : IClassFixture<Real
             .Take(5)
             .ToList();
 
-        var topSellers = requests
+        Assert.NotEmpty(topBuyers);
+        Assert.True(topBuyers.Count <= 5);
+    }
+
+    /// <summary>
+    ///  Получение топ-5 клиентов по количеству заявок (на продажу)
+    /// </summary>
+    [Fact]
+    public void GetTop5SellersByRequests()
+    {
+        var topSellers = testData.Requests
             .Where(r => r.Type == RequestType.Sell)
             .GroupBy(r => r.Client.FullName)
             .Select(g => new { Client = g.Key, Count = g.Count() })
@@ -59,69 +62,57 @@ public class RealEstateQueriesTests(RealEstateSeed fixture) : IClassFixture<Real
             .Take(5)
             .ToList();
 
-        Assert.NotEmpty(topBuyers);
         Assert.NotEmpty(topSellers);
-        Assert.True(topBuyers.Count <= 5);
         Assert.True(topSellers.Count <= 5);
     }
 
     /// <summary>
-    /// Вывести информацию о количестве заявок по каждому типу недвижимости
+    /// Получение количества заявок по каждому типу недвижимости
     /// </summary>
     [Fact]
-    public void GetRequestCountByPropertyType_ShouldReturnGroupedData()
+    public void GetRequestCountByPropertyType()
     {
-        var requests = _fixture.Seed.Requests;
-
-        var stats = requests
+        var counts = testData.Requests
             .GroupBy(r => r.Property.Type)
-            .Select(g => new { Type = g.Key, Count = g.Count() })
+            .Select(g => new { PropertyType = g.Key, Count = g.Count() })
             .ToList();
 
-        Assert.NotEmpty(stats);
-        Assert.All(stats, s => Assert.True(s.Count > 0));
+        Assert.NotEmpty(counts);
+        Assert.All(counts, x => Assert.True(x.Count > 0));
     }
 
     /// <summary>
-    /// Вывести информацию о клиентах, открывших заявки с минимальной стоимостью
+    /// Получение клиентов с минимальной стоимостью заявки
     /// </summary>
     [Fact]
-    public void GetClientsWithMinRequestAmount_ShouldReturnCorrectClients()
+    public void GetClientsWithMinRequestAmount()
     {
-        var requests = _fixture.Seed.Requests;
-        var minAmount = requests.Min(r => r.Amount);
-
-        var clientsWithMin = requests
+        var minAmount = testData.Requests.Min(r => r.Amount);
+        var clients = testData.Requests
             .Where(r => r.Amount == minAmount)
-            .Select(r => r.Client)
+            .Select(r => r.Client.FullName)
             .Distinct()
             .ToList();
 
-        Assert.NotEmpty(clientsWithMin);
-        Assert.All(clientsWithMin, c => Assert.False(string.IsNullOrWhiteSpace(c.FullName)));
+        Assert.NotEmpty(clients);
     }
 
     /// <summary>
-    /// Вывести сведения о клиентах, ищущих недвижимость заданного типа, упорядочить по ФИО
+    /// Получение клиентов, ищущих недвижимость заданного типа (например, квартиры)
     /// </summary>
     [Fact]
-    public void GetClientsByPropertyType_ShouldReturnOrderedList()
+    public void GetClientsByPropertyType()
     {
-        var requests = _fixture.Seed.Requests;
-        var type = PropertyType.Apartment;
+        var targetType = PropertyType.Apartment;
 
-        var clients = requests
-            .Where(r => r.Property.Type == type && r.Type == RequestType.Buy)
-            .Select(r => r.Client)
+        var clients = testData.Requests
+            .Where(r => r.Property.Type == targetType && r.Type == RequestType.Buy)
+            .Select(r => r.Client.FullName)
             .Distinct()
-            .OrderBy(c => c.FullName)
+            .OrderBy(name => name)
             .ToList();
 
-        Assert.NotNull(clients);
-        Assert.All(clients, c => Assert.False(string.IsNullOrWhiteSpace(c.FullName)));
-        if (clients.Count > 1)
-        {
-            var ordered = clients.OrderBy(c => c.FullName).ToList();
-            Assert.Equal(ordered, clients);
+        Assert.NotEmpty(clients);
+        Assert.Equal(clients.OrderBy(n => n), clients);
     }
 }
