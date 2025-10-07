@@ -4,12 +4,12 @@ using RealEstateAgency.Domain.Enums;
 namespace RealEstateAgency.Tests;
 
 /// <summary>
-/// Ќабор тестов дл€ проверки выборок из данных RealEstateSeed
+/// Unit tests for querying real estate data using <see cref="RealEstateSeed"/> fixture
 /// </summary>
 public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<RealEstateSeed>
 {
     /// <summary>
-    ///  ѕолучение всех продавцов, оставивших за€вки за заданный период
+    /// Tests retrieval of all sellers who submitted sell requests within a given period
     /// </summary>
     [Fact]
     public void GetSellersByPeriod()
@@ -31,7 +31,7 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
     }
 
     /// <summary>
-    ///  ѕолучение топ-5 клиентов по количеству за€вок (на покупку)
+    /// Tests retrieval of top 5 buyers by number of buy requests
     /// </summary>
     [Fact]
     public void GetTop5BuyersByRequests()
@@ -49,7 +49,7 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
     }
 
     /// <summary>
-    ///  ѕолучение топ-5 клиентов по количеству за€вок (на продажу)
+    /// Tests retrieval of top 5 sellers by number of sell requests
     /// </summary>
     [Fact]
     public void GetTop5SellersByRequests()
@@ -67,7 +67,7 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
     }
 
     /// <summary>
-    /// ѕолучение количества за€вок по каждому типу недвижимости
+    /// Tests counting of requests grouped by property type
     /// </summary>
     [Fact]
     public void GetRequestCountByPropertyType()
@@ -82,7 +82,7 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
     }
 
     /// <summary>
-    /// ѕолучение клиентов с минимальной стоимостью за€вки
+    /// Tests retrieval of clients who submitted requests with the minimum amount
     /// </summary>
     [Fact]
     public void GetClientsWithMinRequestAmount()
@@ -98,7 +98,7 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
     }
 
     /// <summary>
-    /// ѕолучение клиентов, ищущих недвижимость заданного типа (например, квартиры)
+    /// Tests retrieval of clients who submitted buy requests for a specified property type, ordered by full name
     /// </summary>
     [Fact]
     public void GetClientsByPropertyType()

@@ -4,15 +4,29 @@ using RealEstateAgency.Domain.Enums;
 namespace RealEstateAgency.Domain.Data;
 
 /// <summary>
-/// Тестовый набор данных для RealEstateAgency
-/// Используется в фикстурах и юнит-тестах
+/// Represents a seeded dataset for testing and fixture purposes in the RealEstateAgency project
+/// Contains collections of clients, properties, and requests
 /// </summary>
 public class RealEstateSeed
 {
+    /// <summary>
+    /// Collection of clients in the seeded dataset
+    /// </summary>
     public List<Client> Clients { get; } = new();
+
+    /// <summary>
+    /// Collection of real estate objects in the seeded dataset
+    /// </summary>
     public List<RealEstateObject> Properties { get; } = new();
+
+    /// <summary>
+    /// Collection of requests made by clients for properties
+    /// </summary>
     public List<Request> Requests { get; } = new();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RealEstateSeed"/> class with predefined data
+    /// </summary>
     public RealEstateSeed()
     {
         Clients.AddRange(new[]
