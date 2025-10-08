@@ -8,6 +8,11 @@ namespace RealEstateAgency.Domain.Entities;
 public class RealEstateObject
 {
     /// <summary>
+    /// Unique identifier of the property
+    /// </summary>
+    public int Id { get; set; }
+
+    /// <summary>
     /// Unique cadastral number of the property
     /// </summary>
     public required string CadastralNumber { get; set; }

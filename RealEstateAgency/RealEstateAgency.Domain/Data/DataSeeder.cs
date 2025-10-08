@@ -31,36 +31,65 @@ public class RealEstateSeed
     {
         Clients.AddRange(new[]
         {
-            new Client { FullName = "Иванов Иван Иванович",
+            new Client 
+            { 
+                FullName = "Иванов Иван Иванович",
                 PassportNumber = "4000 123456",
-                Phone = "79001112233" },
-            new Client { FullName = "Петрова Анна Сергеевна",
+                Phone = "79001112233" 
+            },
+            new Client 
+            { 
+                FullName = "Петрова Анна Сергеевна",
                 PassportNumber = "4001 654321",
-                Phone = "79002223344" },
-            new Client { FullName = "Сидоров Павел Дмитриевич",
+                Phone = "79002223344" 
+            },
+            new Client { 
+                FullName = "Сидоров Павел Дмитриевич",
                 PassportNumber = "4002 987654",
-                Phone = "79003334455" },
-            new Client { FullName = "Кузнецова Мария Александровна",
+                Phone = "79003334455" 
+            },
+            new Client 
+            { 
+                FullName = "Кузнецова Мария Александровна",
                 PassportNumber = "4003 456789",
-                Phone = "79004445566" },
-            new Client { FullName = "Смирнов Алексей Игоревич",
+                Phone = "79004445566" 
+            },
+            new Client 
+            { 
+                FullName = "Смирнов Алексей Игоревич",
                 PassportNumber = "4004 321987",
-                Phone = "79005556677" },
-            new Client { FullName = "Васильев Николай Петрович",
+                Phone = "79005556677" 
+            },
+            new Client 
+            { 
+                FullName = "Васильев Николай Петрович",
                 PassportNumber = "4005 789123",
-                Phone = "79006667788" },
-            new Client { FullName = "Морозова Екатерина Олеговна",
+                Phone = "79006667788" 
+            },
+            new Client 
+            { 
+                FullName = "Морозова Екатерина Олеговна",
                 PassportNumber = "4006 147258",
-                Phone = "79007778899" },
-            new Client { FullName = "Громов Артём Сергеевич",
+                Phone = "79007778899" 
+            },
+            new Client 
+            { 
+                FullName = "Громов Артём Сергеевич",
                 PassportNumber = "4007 369258",
-                Phone = "79008889900" },
-            new Client { FullName = "Лебедева Дарья Андреевна",
+                Phone = "79008889900" 
+            },
+            new Client 
+            { 
+                FullName = "Лебедева Дарья Андреевна",
                 PassportNumber = "4008 951753",
-                Phone = "79009990011" },
-            new Client { FullName = "Попов Дмитрий Валерьевич",
+                Phone = "79009990011" 
+            },
+            new Client 
+            { 
+                FullName = "Попов Дмитрий Валерьевич",
                 PassportNumber = "4009 753159",
-                Phone = "79001002030" }
+                Phone = "79001002030" 
+            }
         });
 
         Properties.AddRange(new[]
@@ -205,7 +234,7 @@ public class RealEstateSeed
                 Property = Properties[0],
                 Type = RequestType.Buy,
                 Amount = 12_500_000,
-                DateCreated = new DateTime(2025, 9, 15)
+                DateCreated = new DateOnly(2025, 9, 15)
             },
             new Request
             {
@@ -213,7 +242,7 @@ public class RealEstateSeed
                 Property = Properties[2],
                 Type = RequestType.Sell,
                 Amount = 25_000_000,
-                DateCreated = new DateTime(2025, 9, 18)
+                DateCreated = new DateOnly(2025, 9, 18)
             },
             new Request
             {
@@ -221,7 +250,7 @@ public class RealEstateSeed
                 Property = Properties[1],
                 Type = RequestType.Buy,
                 Amount = 14_000_000,
-                DateCreated = new DateTime(2025, 9, 20)
+                DateCreated = new DateOnly(2025, 9, 20)
             },
             new Request
             {
@@ -229,7 +258,7 @@ public class RealEstateSeed
                 Property = Properties[3],
                 Type = RequestType.Sell,
                 Amount = 19_000_000,
-                DateCreated = new DateTime(2025, 9, 22)
+                DateCreated = new DateOnly(2025, 9, 22)
             },
             new Request
             {
@@ -237,7 +266,7 @@ public class RealEstateSeed
                 Property = Properties[4],
                 Type = RequestType.Sell,
                 Amount = 30_000_000,
-                DateCreated = new DateTime(2025, 9, 25)
+                DateCreated = new DateOnly(2025, 9, 25)
             },
             new Request
             {
@@ -245,7 +274,7 @@ public class RealEstateSeed
                 Property = Properties[5],
                 Type = RequestType.Buy,
                 Amount = 9_500_000,
-                DateCreated = new DateTime(2025, 9, 26)
+                DateCreated = new DateOnly(2025, 9, 26)
             },
             new Request
             {
@@ -253,7 +282,7 @@ public class RealEstateSeed
                 Property = Properties[6],
                 Type = RequestType.Sell,
                 Amount = 22_000_000,
-                DateCreated = new DateTime(2025, 9, 27)
+                DateCreated = new DateOnly(2025, 9, 27)
             },
             new Request
             {
@@ -261,7 +290,7 @@ public class RealEstateSeed
                 Property = Properties[7],
                 Type = RequestType.Buy,
                 Amount = 16_000_000,
-                DateCreated = new DateTime(2025, 9, 28)
+                DateCreated = new DateOnly(2025, 9, 28)
             },
             new Request
             {
@@ -269,7 +298,7 @@ public class RealEstateSeed
                 Property = Properties[8],
                 Type = RequestType.Sell,
                 Amount = 28_000_000,
-                DateCreated = new DateTime(2025, 9, 29)
+                DateCreated = new DateOnly(2025, 9, 29)
             },
             new Request
             {
@@ -277,7 +306,7 @@ public class RealEstateSeed
                 Property = Properties[9],
                 Type = RequestType.Buy,
                 Amount = 11_000_000,
-                DateCreated = new DateTime(2025, 9, 30)
+                DateCreated = new DateOnly(2025, 9, 30)
             }
         });
     }

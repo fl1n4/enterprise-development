@@ -12,65 +12,64 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
     /// Tests retrieval of all sellers who submitted sell requests within a given period
     /// </summary>
     [Fact]
-    public void GetSellersByPeriod()
+    public void GetSellersByPeriod_WhenDateInRange_ReturnsExpectedSellers()
     {
-        // arrange
-        var from = new DateTime(2025, 9, 17);
-        var to = new DateTime(2025, 9, 26);
+        var from = new DateOnly(2025, 9, 17);
+        var to = new DateOnly(2025, 9, 26);
 
-        // act
         var sellers = testData.Requests
-            .Where(r => r.Type == RequestType.Sell && r.DateCreated >= from && r.DateCreated <= to)
+            .Where(r => r.Type == RequestType.Sell
+                        && r.DateCreated >= from
+                        && r.DateCreated <= to)
             .Select(r => r.Client.FullName)
             .Distinct()
             .ToList();
 
-        // assert
-        Assert.NotEmpty(sellers);
-        Assert.All(sellers, s => Assert.False(string.IsNullOrWhiteSpace(s)));
+        Assert.Equal(3, sellers.Count);
+        Assert.Contains("Петрова Анна Сергеевна", sellers);
     }
 
     /// <summary>
-    /// Tests retrieval of top 5 buyers by number of buy requests
+    /// Tests retrieval of top 5 clients by request type (Buy and Sell)
+    /// Verifies that each list contains at most five clients and is correctly grouped by type
     /// </summary>
     [Fact]
-    public void GetTop5BuyersByRequests()
+    public void GetTop5ClientsByRequestType_WhenGroupedByBuyAndSell_ReturnsAtMostFivePerGroup()
     {
-        var topBuyers = testData.Requests
-            .Where(r => r.Type == RequestType.Buy)
-            .GroupBy(r => r.Client.FullName)
-            .Select(g => new { Client = g.Key, Count = g.Count() })
-            .OrderByDescending(x => x.Count)
-            .Take(5)
+        var groupedTopClients = testData.Requests
+            .Where(r => r.Type != null)
+            .GroupBy(r => r.Type)
+            .Select(g => new
+            {
+                Type = g.Key.ToString()!.ToLower(),
+                Clients = g.GroupBy(r => r.Client.FullName)
+                           .Select(cg => new { Client = cg.Key, Count = cg.Count() })
+                           .OrderByDescending(x => x.Count)
+                           .Take(5)
+                           .Select(x => x.Client)
+                           .ToList()
+            })
             .ToList();
 
-        Assert.NotEmpty(topBuyers);
-        Assert.True(topBuyers.Count <= 5);
-    }
+        Assert.NotNull(groupedTopClients);
+        Assert.Equal(2, groupedTopClients.Count);
 
-    /// <summary>
-    /// Tests retrieval of top 5 sellers by number of sell requests
-    /// </summary>
-    [Fact]
-    public void GetTop5SellersByRequests()
-    {
-        var topSellers = testData.Requests
-            .Where(r => r.Type == RequestType.Sell)
-            .GroupBy(r => r.Client.FullName)
-            .Select(g => new { Client = g.Key, Count = g.Count() })
-            .OrderByDescending(x => x.Count)
-            .Take(5)
-            .ToList();
+        foreach (var group in groupedTopClients)
+        {
+            Assert.True(group.Clients.Count <= 5, $"Too many clients in {group.Type}");
+            Assert.NotEmpty(group.Clients);
+        }
 
-        Assert.NotEmpty(topSellers);
-        Assert.True(topSellers.Count <= 5);
+        var allClients = groupedTopClients.SelectMany(g => g.Clients).ToList();
+        Assert.Contains("Иванов Иван Иванович", allClients);
+        Assert.Contains("Петрова Анна Сергеевна", allClients);
     }
 
     /// <summary>
     /// Tests counting of requests grouped by property type
     /// </summary>
     [Fact]
-    public void GetRequestCountByPropertyType()
+    public void GetRequestCountByPropertyType_WhenGrouped_ReturnsCountForEachType()
     {
         var counts = testData.Requests
             .GroupBy(r => r.Property.Type)
@@ -85,23 +84,25 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
     /// Tests retrieval of clients who submitted requests with the minimum amount
     /// </summary>
     [Fact]
-    public void GetClientsWithMinRequestAmount()
+    public void GetClientsWithMinRequestAmount_WhenMinAmountExists_ReturnsExpectedClients()
     {
         var minAmount = testData.Requests.Min(r => r.Amount);
+
         var clients = testData.Requests
             .Where(r => r.Amount == minAmount)
             .Select(r => r.Client.FullName)
             .Distinct()
             .ToList();
 
-        Assert.NotEmpty(clients);
+        Assert.Equal(1, clients.Count);
+        Assert.Contains("Васильев Николай Петрович", clients);
     }
 
     /// <summary>
     /// Tests retrieval of clients who submitted buy requests for a specified property type, ordered by full name
     /// </summary>
     [Fact]
-    public void GetClientsByPropertyType()
+    public void GetClientsByPropertyType_WhenFilteredByType_ReturnsAlphabeticallySortedClients()
     {
         var targetType = PropertyType.Apartment;
 
@@ -112,7 +113,12 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
             .OrderBy(name => name)
             .ToList();
 
+        Assert.NotNull(clients);
         Assert.NotEmpty(clients);
-        Assert.Equal(clients.OrderBy(n => n), clients);
+
+        var isOrdered = clients.SequenceEqual(clients.OrderBy(n => n));
+        Assert.True(isOrdered, "The list of customers should be sorted by first name in alphabetical order");
+
+        Assert.Contains("Иванов Иван Иванович", clients);
     }
 }

@@ -6,6 +6,11 @@
 public class Client
 {
     /// <summary>
+    /// Unique identifier of the client
+    /// </summary>
+    public int Id { get; set; }
+
+    /// <summary>
     /// Full name of the client
     /// </summary>
     public required string FullName { get; set; }

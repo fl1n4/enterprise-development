@@ -8,6 +8,10 @@ namespace RealEstateAgency.Domain.Entities;
 public class Request
 {
     /// <summary>
+    /// Unique identifier of the request
+    /// </summary>
+    public int Id { get; set; }
+    /// <summary>
     /// Client who submitted the request
     /// </summary>
     public required Client Client { get; set; }
@@ -30,5 +34,5 @@ public class Request
     /// <summary>
     /// Date when the request was created
     /// </summary>
-    public DateTime? DateCreated { get; set; }
+    public DateOnly? DateCreated { get; set; }
 }
