@@ -94,7 +94,7 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
             .Distinct()
             .ToList();
 
-        Assert.Equal(1, clients.Count);
+        Assert.Single(clients);
         Assert.Contains("Васильев Николай Петрович", clients);
     }
 

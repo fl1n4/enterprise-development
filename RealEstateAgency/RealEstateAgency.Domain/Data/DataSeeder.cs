@@ -33,59 +33,70 @@ public class RealEstateSeed
         {
             new Client 
             { 
+                Id = 1,
                 FullName = "Иванов Иван Иванович",
                 PassportNumber = "4000 123456",
                 Phone = "79001112233" 
             },
             new Client 
             { 
+                Id = 2,
                 FullName = "Петрова Анна Сергеевна",
                 PassportNumber = "4001 654321",
                 Phone = "79002223344" 
             },
-            new Client { 
+            new Client 
+            {
+                Id = 3,
                 FullName = "Сидоров Павел Дмитриевич",
                 PassportNumber = "4002 987654",
                 Phone = "79003334455" 
             },
             new Client 
             { 
+                Id = 4,
                 FullName = "Кузнецова Мария Александровна",
                 PassportNumber = "4003 456789",
                 Phone = "79004445566" 
             },
             new Client 
             { 
+                Id = 5,
                 FullName = "Смирнов Алексей Игоревич",
                 PassportNumber = "4004 321987",
                 Phone = "79005556677" 
             },
             new Client 
             { 
+                Id = 6,
                 FullName = "Васильев Николай Петрович",
                 PassportNumber = "4005 789123",
                 Phone = "79006667788" 
             },
             new Client 
             { 
+                Id = 7,
                 FullName = "Морозова Екатерина Олеговна",
                 PassportNumber = "4006 147258",
                 Phone = "79007778899" 
             },
             new Client 
             { 
+                Id = 8,
                 FullName = "Громов Артём Сергеевич",
                 PassportNumber = "4007 369258",
                 Phone = "79008889900" 
             },
             new Client 
             { 
+                Id = 9,
                 FullName = "Лебедева Дарья Андреевна",
                 PassportNumber = "4008 951753",
                 Phone = "79009990011" 
             },
             new Client 
             { 
+                Id = 10,
                 FullName = "Попов Дмитрий Валерьевич",
                 PassportNumber = "4009 753159",
                 Phone = "79001002030" 
@@ -96,6 +107,7 @@ public class RealEstateSeed
         {
             new RealEstateObject
             {
+                Id = 1,
                 CadastralNumber = "77:01:0004012:1234",
                 Address = "г. Москва, ул. Ленина, д. 10",
                 Floors = 10,
@@ -109,6 +121,7 @@ public class RealEstateSeed
             },
             new RealEstateObject
             {
+                Id = 2,
                 CadastralNumber = "77:02:0001111:5678",
                 Address = "г. Москва, пр-т Мира, д. 45",
                 Floors = 16,
@@ -122,6 +135,7 @@ public class RealEstateSeed
             },
             new RealEstateObject
             {
+                Id = 3,
                 CadastralNumber = "78:04:0002222:2222",
                 Address = "г. Санкт-Петербург, Невский пр-т, д. 100",
                 Floors = 5,
@@ -135,6 +149,7 @@ public class RealEstateSeed
             },
             new RealEstateObject
             {
+                Id = 4,
                 CadastralNumber = "77:07:0009999:3333",
                 Address = "г. Москва, ул. Строителей, д. 7",
                 Floors = 2,
@@ -148,6 +163,7 @@ public class RealEstateSeed
             },
             new RealEstateObject
             {
+                Id = 5,
                 CadastralNumber = "50:10:0011222:4444",
                 Address = "МО, г. Химки, ул. Кирова, д. 3",
                 Floors = 1,
@@ -161,6 +177,7 @@ public class RealEstateSeed
             },
             new RealEstateObject
             {
+                Id = 6,
                 CadastralNumber = "77:03:0005555:5555",
                 Address = "г. Москва, ул. Пушкина, д. 25",
                 Floors = 9,
@@ -174,6 +191,7 @@ public class RealEstateSeed
             },
             new RealEstateObject
             {
+                Id = 7,
                 CadastralNumber = "78:06:0008888:6666",
                 Address = "г. Санкт-Петербург, Литейный пр-т, д. 12",
                 Floors = 8,
@@ -187,6 +205,7 @@ public class RealEstateSeed
             },
             new RealEstateObject
             {
+                Id = 8,
                 CadastralNumber = "77:09:0003333:7777",
                 Address = "г. Москва, ул. Новая, д. 3",
                 Floors = 3,
@@ -200,6 +219,7 @@ public class RealEstateSeed
             },
             new RealEstateObject
             {
+                Id = 9,
                 CadastralNumber = "50:20:0007777:8888",
                 Address = "МО, г. Одинцово, ул. Гагарина, д. 8",
                 Floors = 1,
@@ -213,6 +233,7 @@ public class RealEstateSeed
             },
             new RealEstateObject
             {
+                Id = 10,
                 CadastralNumber = "77:12:0006666:9999",
                 Address = "г. Москва, пр-т Вернадского, д. 90",
                 Floors = 25,
@@ -230,6 +251,7 @@ public class RealEstateSeed
         {
             new Request
             {
+                Id = 1,
                 Client = Clients[0],
                 Property = Properties[0],
                 Type = RequestType.Buy,
@@ -238,6 +260,7 @@ public class RealEstateSeed
             },
             new Request
             {
+                Id = 2,
                 Client = Clients[1],
                 Property = Properties[2],
                 Type = RequestType.Sell,
@@ -246,6 +269,7 @@ public class RealEstateSeed
             },
             new Request
             {
+                Id = 3,
                 Client = Clients[2],
                 Property = Properties[1],
                 Type = RequestType.Buy,
@@ -254,6 +278,7 @@ public class RealEstateSeed
             },
             new Request
             {
+                Id = 4,
                 Client = Clients[3],
                 Property = Properties[3],
                 Type = RequestType.Sell,
@@ -262,6 +287,7 @@ public class RealEstateSeed
             },
             new Request
             {
+                Id = 5,
                 Client = Clients[4],
                 Property = Properties[4],
                 Type = RequestType.Sell,
@@ -270,6 +296,7 @@ public class RealEstateSeed
             },
             new Request
             {
+                Id = 6,
                 Client = Clients[5],
                 Property = Properties[5],
                 Type = RequestType.Buy,
@@ -278,6 +305,7 @@ public class RealEstateSeed
             },
             new Request
             {
+                Id = 7,
                 Client = Clients[6],
                 Property = Properties[6],
                 Type = RequestType.Sell,
@@ -286,6 +314,7 @@ public class RealEstateSeed
             },
             new Request
             {
+                Id = 8,
                 Client = Clients[7],
                 Property = Properties[7],
                 Type = RequestType.Buy,
@@ -294,6 +323,7 @@ public class RealEstateSeed
             },
             new Request
             {
+                Id = 9,
                 Client = Clients[8],
                 Property = Properties[8],
                 Type = RequestType.Sell,
@@ -302,6 +332,7 @@ public class RealEstateSeed
             },
             new Request
             {
+                Id = 10,
                 Client = Clients[9],
                 Property = Properties[9],
                 Type = RequestType.Buy,
