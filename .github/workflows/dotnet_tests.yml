@@ -19,14 +19,11 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      -   name: Change directory
-          working-directory: ./RealEstateAgency
+      - name: dotnet restore
+        run: dotnet restore ./RealEstateAgency/RealEstateAgency.sln
 
-      - name: Restore dependencies
-        run: dotnet restore RealEstateAgency.sln
-
-      - name: Build
-        run: dotnet build RealEstateAgency.sln --no-restore
+      - name: Build solution
+        run: dotnet build ./RealEstateAgency/RealEstateAgency.sln --no-restore
 
       - name: Run tests
-        run: dotnet test RealEstateAgency.Tests/RealEstateAgency.Tests.csproj --no-build --verbosity normal
+        run: dotnet test ./RealEstateAgency/RealEstateAgency.Tests/RealEstateAgency.Tests.csproj --no-build --verbosity detailed
