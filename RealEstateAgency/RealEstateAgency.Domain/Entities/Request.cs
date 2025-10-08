@@ -10,7 +10,7 @@ public class Request
     /// <summary>
     /// Unique identifier of the request
     /// </summary>
-    public int Id { get; set; }
+    public required int Id { get; set; }
     /// <summary>
     /// Client who submitted the request
     /// </summary>
