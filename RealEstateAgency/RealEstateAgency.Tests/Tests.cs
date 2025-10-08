@@ -26,7 +26,7 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
             .ToList();
 
         Assert.Equal(3, sellers.Count);
-        Assert.Contains("Петрова Анна Сергеевна", sellers);
+        Assert.Contains("РџРµС‚СЂРѕРІР° РђРЅРЅР° РЎРµСЂРіРµРµРІРЅР°", sellers);
     }
 
     /// <summary>
@@ -61,8 +61,8 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
         }
 
         var allClients = groupedTopClients.SelectMany(g => g.Clients).ToList();
-        Assert.Contains("Иванов Иван Иванович", allClients);
-        Assert.Contains("Петрова Анна Сергеевна", allClients);
+        Assert.Contains("РРІР°РЅРѕРІ РРІР°РЅ РРІР°РЅРѕРІРёС‡", allClients);
+        Assert.Contains("РџРµС‚СЂРѕРІР° РђРЅРЅР° РЎРµСЂРіРµРµРІРЅР°", allClients);
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
             .ToList();
 
         Assert.Equal(1, clients.Count);
-        Assert.Contains("Васильев Николай Петрович", clients);
+        Assert.Contains("Р’Р°СЃРёР»СЊРµРІ РќРёРєРѕР»Р°Р№ РџРµС‚СЂРѕРІРёС‡", clients);
     }
 
     /// <summary>
@@ -119,6 +119,6 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
         var isOrdered = clients.SequenceEqual(clients.OrderBy(n => n));
         Assert.True(isOrdered, "The list of customers should be sorted by first name in alphabetical order");
 
-        Assert.Contains("Иванов Иван Иванович", clients);
+        Assert.Contains("РРІР°РЅРѕРІ РРІР°РЅ РРІР°РЅРѕРІРёС‡", clients);
     }
 }
