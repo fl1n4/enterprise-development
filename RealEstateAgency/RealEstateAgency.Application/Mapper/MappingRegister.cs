@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RealEstateAgency.Application.Contracts;
-internal class MappingRegister
-{
-}
 ﻿using RealEstateAgency.Application.Contracts.Client;
-using AirCompany.Application.Contracts.AircraftModel;
-using AirCompany.Application.Contracts.Flight;
-using AirCompany.Application.Contracts.Passenger;
-using AirCompany.Application.Contracts.Ticket;
-using AirCompany.Domain.Model;
+using RealEstateAgency.Application.Contracts.AircraftModel;
+using RealEstateAgency.Application.Contracts.Flight;
+using RealEstateAgency.Application.Contracts.Passenger;
+using RealEstateAgency.Application.Contracts.Ticket;
+using RealEstateAgency.Domain.Entities;
 using Mapster;
 
-namespace AirCompany.Application.Mapper;
-
+namespace RealEstateAgency.Application.Mapper;
 /// <summary>
 /// Global Mapster configuration for mapping between Domain and DTO models.
 /// </summary>

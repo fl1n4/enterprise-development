@@ -14,8 +14,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.ServiceDefaults", "RealEstateAgency.ServiceDefaults\RealEstateAgency.ServiceDefaults.csproj", "{7F9DBAF2-08A7-7390-FBBC-4310C54B9462}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Application", "RealEstateAgency.Application\RealEstateAgency.Application.csproj", "{4DDE5082-2D73-4177-BC12-0F69290B204B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{726A1468-AA49-4778-BF8C-55EDD8464F55} = {726A1468-AA49-4778-BF8C-55EDD8464F55}
+		{B48E1860-0053-4E3A-8E29-3CFE79D9AD2B} = {B48E1860-0053-4E3A-8E29-3CFE79D9AD2B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Application.Contracts", "RealEstateAgency.Application.Contracts\RealEstateAgency.Application.Contracts.csproj", "{726A1468-AA49-4778-BF8C-55EDD8464F55}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B48E1860-0053-4E3A-8E29-3CFE79D9AD2B} = {B48E1860-0053-4E3A-8E29-3CFE79D9AD2B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Infrastructure.Database", "RealEstateAgency.Infrastructure.Database\RealEstateAgency.Infrastructure.Database.csproj", "{793B4DFF-EF7B-4FBD-99BF-68F922B22276}"
 EndProject
