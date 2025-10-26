@@ -1,8 +1,6 @@
 ﻿using RealEstateAgency.Application.Contracts.Client;
-using RealEstateAgency.Application.Contracts.AircraftModel;
-using RealEstateAgency.Application.Contracts.Flight;
-using RealEstateAgency.Application.Contracts.Passenger;
-using RealEstateAgency.Application.Contracts.Ticket;
+using RealEstateAgency.Application.Contracts.RealEstateObject;
+using RealEstateAgency.Application.Contracts.Request;
 using RealEstateAgency.Domain.Entities;
 using Mapster;
 
@@ -18,28 +16,12 @@ public class MappingRegister : IRegister
     /// <param name="config">The TypeAdapterConfig instance used to define mapping rules.</param>
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<Ticket, TicketDto>();
+        config.NewConfig<Client, ClientDto>();
 
-        config.NewConfig<TicketCreateUpdateDto, Ticket>()
-            .Ignore(dest => dest.Id)
-            .Ignore(dest => dest.Flight)
-            .Ignore(dest => dest.Passenger);
+        // === Real Estate Object ===
+        config.NewConfig<RealEstateObject, RealEstateObjectDto>();
 
-        config.NewConfig<Passenger, PassengerDto>();
-
-        config.NewConfig<PassengerCreateUpdateDto, Passenger>()
-            .Ignore(dest => dest.Id)
-            .Ignore(dest => dest.Tickets!);
-
-        config.NewConfig<Flight, FlightDto>();
-
-        config.NewConfig<FlightCreateUpdateDto, Flight>()
-            .Ignore(dest => dest.Id)
-            .Ignore(dest => dest.AircraftModel)
-            .Ignore(dest => dest.Tickets!);
-
-        config.NewConfig<AircraftModel, AircraftModelDto>();
-
-        config.NewConfig<AircraftFamily, AircraftFamilyDto>();
+        // === Request ===
+        config.NewConfig<Request, RequestDto>();
     }
 }

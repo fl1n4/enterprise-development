@@ -1,60 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RealEstateAgency.Application.Services;
-internal class ClientService
-{
-}
-
-﻿using AirCompany.Application.Contracts.AircraftFamily;
-using AirCompany.Application.Contracts.AircraftModel;
-using AirCompany.Domain;
-using AirCompany.Domain.Model;
+﻿using RealEstateAgency.Application.Contracts;
+using RealEstateAgency.Application.Contracts.Client;
+using RealEstateAgency.Domain.Entities;
 using MapsterMapper;
 
-namespace AirCompany.Application.Service;
+namespace RealEstateAgency.Application.Services;
 
 /// <summary>
-/// Service providing read operations for <see cref="AircraftFamily"/> entities.
-/// Implements <see cref="IAircraftFamilyReadService"/> for AircraftFamily DTOs.
+/// Service providing read operations for <see cref="Client"/> entities.
+/// Implements <see cref="IApplicationReadService{ClientDto, int}"/>.
 /// </summary>
-public class AirCraftFamilyService(IRepository<AircraftFamily, int> repository, IMapper mapper) : IAircraftFamilyReadService
+public class ClientService(
+    IRepository<Client, int> repository,
+    IMapper mapper)
+    : IApplicationReadService<ClientDto, int>
 {
     /// <summary>
-    /// Retrieves a single <see cref="AircraftFamilyDto"/> by its unique identifier.
+    /// Retrieves a single <see cref="ClientDto"/> by its unique identifier.
     /// </summary>
-    /// <param name="familyId">The ID of the aircraft family to retrieve.</param>
-    /// <returns>The <see cref="AircraftFamilyDto"/> corresponding to the given ID.</returns>
-    /// <exception cref="KeyNotFoundException">Thrown if no entity with the specified ID exists.</exception>
-    public async Task<AircraftFamilyDto> Get(int familyId)
+    /// <param name="dtoId">The ID of the client to retrieve.</param>
+    /// <returns>The <see cref="ClientDto"/> corresponding to the given ID.</returns>
+    /// <exception cref="KeyNotFoundException">Thrown if no client with the specified ID exists.</exception>
+    public async Task<ClientDto> Get(int dtoId)
     {
-        var entity = await repository.Get(familyId)
-                     ?? throw new KeyNotFoundException($"Entity with ID {familyId} not found");
-        return mapper.Map<AircraftFamilyDto>(entity);
+        var entity = await repository.Get(dtoId)
+                     ?? throw new KeyNotFoundException($"Client with ID {dtoId} not found");
+        return mapper.Map<ClientDto>(entity);
     }
 
     /// <summary>
-    /// Retrieves all <see cref="AircraftFamilyDto"/> entities from the repository.
+    /// Retrieves all <see cref="ClientDto"/> entities from the repository.
     /// </summary>
-    /// <returns>A list of all aircraft family DTOs.</returns>
-    public async Task<IList<AircraftFamilyDto>> GetAll() => mapper.Map<List<AircraftFamilyDto>>(await repository.GetAll());
-
-    /// <summary>
-    /// Retrieves all <see cref="AircraftModelDto"/> objects associated with a specific aircraft family.
-    /// </summary>
-    /// <param name="familyId">The ID of the aircraft family whose models should be returned.</param>
-    /// <returns>A list of <see cref="AircraftModelDto"/> belonging to the specified family.</returns>
-    /// <exception cref="KeyNotFoundException">
-    /// Thrown if the aircraft family with the given ID does not exist.
-    /// </exception>
-    public async Task<IList<AircraftModelDto>> GetAircraftModels(int familyId)
-    {
-        var entity = await repository.Get(familyId)
-                    ?? throw new KeyNotFoundException($"Entity with ID {familyId} not found");
-
-        return mapper.Map<List<AircraftModelDto>>(entity.Models!);
-    }
+    /// <returns>A list of all client DTOs.</returns>
+    public async Task<IList<ClientDto>> GetAll() =>
+        mapper.Map<List<ClientDto>>(await repository.GetAll());
 }
