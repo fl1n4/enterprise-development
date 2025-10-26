@@ -18,10 +18,8 @@ public class MappingRegister : IRegister
     {
         config.NewConfig<Client, ClientDto>();
 
-        // === Real Estate Object ===
         config.NewConfig<RealEstateObject, RealEstateObjectDto>();
 
-        // === Request ===
         config.NewConfig<Request, RequestDto>();
     }
 }

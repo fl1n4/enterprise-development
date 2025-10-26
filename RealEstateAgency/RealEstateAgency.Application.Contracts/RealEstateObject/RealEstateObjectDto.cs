@@ -1,4 +1,5 @@
-﻿namespace RealEstateAgency.Application.Contracts.RealEstateObject;
+﻿using RealEstateAgency.Domain.Enums;
+namespace RealEstateAgency.Application.Contracts.RealEstateObject;
 public record RealEstateObjectDto(
     int Id, 
     string CadastralNumber, 
@@ -8,4 +9,6 @@ public record RealEstateObjectDto(
     int Rooms,
     double CeilingHeight,
     int FloorNumber,
-    bool HasEncumbrance);
+    bool HasEncumbrance,
+    PropertyType Type,
+    PropertyPurpose Purpose);

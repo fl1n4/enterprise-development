@@ -1,7 +1,9 @@
-﻿using RealEstateAgency.Application.Contracts;
+﻿using MapsterMapper;
+using RealEstateAgency.Application.Contracts;
 using RealEstateAgency.Application.Contracts.Client;
+using RealEstateAgency.Domain;
 using RealEstateAgency.Domain.Entities;
-using MapsterMapper;
+
 
 namespace RealEstateAgency.Application.Services;
 
