@@ -8,7 +8,7 @@ namespace RealEstateAgency.Application.Mapper;
 /// <summary>
 /// Global Mapster configuration for mapping between Domain and DTO models.
 /// </summary>
-public class MappingRegister : IRegister
+public class MappingRegister : Mapster.IRegister
 {
     /// <summary>
     /// Registers mappings between domain models and DTOs.
@@ -17,9 +17,11 @@ public class MappingRegister : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.NewConfig<Client, ClientDto>();
-
         config.NewConfig<RealEstateObject, RealEstateObjectDto>();
-
         config.NewConfig<Request, RequestDto>();
+
+        config.NewConfig<ClientCreateUpdateDto, Client>();
+        config.NewConfig<RealEstateObjectCreateUpdateDto, RealEstateObject>();
+        config.NewConfig<RequestCreateUpdateDto, Request>();
     }
 }

@@ -11,7 +11,7 @@ namespace RealEstateAgency.Application.Services;
 /// Implements <see cref="IRequestCRUDService"/>.
 /// </summary>
 public class RequestService(
-    IRepository<Request, int> repository,
+    IRequestRepository repository,
     IMapper mapper)
     : IRequestCRUDService
 {

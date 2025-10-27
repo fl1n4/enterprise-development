@@ -10,7 +10,7 @@ namespace RealEstateAgency.Application.Services;
 /// Implements <see cref="IClientCRUDService"/>.
 /// </summary>
 public class ClientService(
-    IRepository<Client, int> repository,
+    IClientRepository repository,
     IMapper mapper)
     : IClientCRUDService
 {

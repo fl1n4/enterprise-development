@@ -10,7 +10,7 @@ namespace RealEstateAgency.Application.Services;
 /// Implements <see cref="IRealEstateObjectCRUDService"/>.
 /// </summary>
 public class RealEstateObjectService(
-    IRepository<RealEstateObject, int> repository,
+    IRealEstateObjectRepository repository,
     IMapper mapper)
     : IRealEstateObjectCRUDService
 {
@@ -19,7 +19,7 @@ public class RealEstateObjectService(
     public async Task<RealEstateObjectDto> Create(RealEstateObjectCreateUpdateDto dto)
     {
         var entity = mapper.Map<RealEstateObject>(dto);
-        entity.Id = Interlocked.Increment(ref _nextId); // временная генерация ID
+        entity.Id = Interlocked.Increment(ref _nextId);
         var created = await repository.Create(entity);
         return mapper.Map<RealEstateObjectDto>(created);
     }

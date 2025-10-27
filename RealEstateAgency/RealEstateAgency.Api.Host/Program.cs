@@ -1,16 +1,20 @@
-using MongoDB.Driver;
+using Mapster;
 using Microsoft.Extensions.Options;
-using RealEstateAgency.Application.Services;
+using MongoDB.Driver;
 using RealEstateAgency.Application.Contracts.Client;
 using RealEstateAgency.Application.Contracts.RealEstateObject;
 using RealEstateAgency.Application.Contracts.Request;
+using RealEstateAgency.Application.Services;
 using RealEstateAgency.Domain;
+using RealEstateAgency.Domain.Entities;
 using RealEstateAgency.Infrastructure.Mongo;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMapster();
 
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection("MongoDb"));
@@ -28,7 +32,23 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
     return client.GetDatabase(settings.DatabaseName);
 });
 
-builder.Services.AddScoped(typeof(IRepository<,>), typeof(MongoRepository<,>));
+builder.Services.AddScoped<IClientRepository>(sp =>
+    (IClientRepository)new MongoRepository<Client, int>(
+        sp.GetRequiredService<IMongoDatabase>(),
+        "Clients"
+    ));
+
+builder.Services.AddScoped<IRealEstateObjectRepository>(sp =>
+    (IRealEstateObjectRepository)new MongoRepository<RealEstateObject, int>(
+        sp.GetRequiredService<IMongoDatabase>(),
+        "RealEstateObjects"
+    ));
+
+builder.Services.AddScoped<IRequestRepository>(sp =>
+    (IRequestRepository)new MongoRepository<Request, int>(
+        sp.GetRequiredService<IMongoDatabase>(),
+        "Requests"
+    ));
 
 builder.Services.AddScoped<IClientCRUDService, ClientService>();
 builder.Services.AddScoped<IRealEstateObjectCRUDService, RealEstateObjectService>();
