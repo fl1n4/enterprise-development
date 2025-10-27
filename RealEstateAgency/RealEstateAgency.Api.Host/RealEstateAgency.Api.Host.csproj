@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RealEstateAgency.Application.Contracts\RealEstateAgency.Application.Contracts.csproj" />
+    <ProjectReference Include="..\RealEstateAgency.Application\RealEstateAgency.Application.csproj" />
+    <ProjectReference Include="..\RealEstateAgency.Domain\RealEstateAgency.Domain.csproj" />
+    <ProjectReference Include="..\RealEstateAgency.Infrastructure.Mongo\RealEstateAgency.Infrastructure.Mongo.csproj" />
     <ProjectReference Include="..\RealEstateAgency.ServiceDefaults\RealEstateAgency.ServiceDefaults.csproj" />
   </ItemGroup>
 

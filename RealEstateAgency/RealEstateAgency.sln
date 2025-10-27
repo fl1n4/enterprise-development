@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Applicatio
 		{B48E1860-0053-4E3A-8E29-3CFE79D9AD2B} = {B48E1860-0053-4E3A-8E29-3CFE79D9AD2B}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Infrastructure.Database", "RealEstateAgency.Infrastructure.Database\RealEstateAgency.Infrastructure.Database.csproj", "{793B4DFF-EF7B-4FBD-99BF-68F922B22276}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Infrastructure.Mongo", "RealEstateAgency.Infrastructure.Mongo\RealEstateAgency.Infrastructure.Mongo.csproj", "{6A520CBC-D75B-4977-930F-C3144B495786}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,10 +60,10 @@ Global
 		{726A1468-AA49-4778-BF8C-55EDD8464F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{726A1468-AA49-4778-BF8C-55EDD8464F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{726A1468-AA49-4778-BF8C-55EDD8464F55}.Release|Any CPU.Build.0 = Release|Any CPU
-		{793B4DFF-EF7B-4FBD-99BF-68F922B22276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{793B4DFF-EF7B-4FBD-99BF-68F922B22276}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{793B4DFF-EF7B-4FBD-99BF-68F922B22276}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{793B4DFF-EF7B-4FBD-99BF-68F922B22276}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A520CBC-D75B-4977-930F-C3144B495786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A520CBC-D75B-4977-930F-C3144B495786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A520CBC-D75B-4977-930F-C3144B495786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A520CBC-D75B-4977-930F-C3144B495786}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
