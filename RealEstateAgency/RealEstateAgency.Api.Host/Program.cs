@@ -2,10 +2,15 @@ using MongoDB.Driver;
 using Microsoft.Extensions.Options;
 using RealEstateAgency.Application.Services;
 using RealEstateAgency.Application.Contracts.Client;
+using RealEstateAgency.Application.Contracts.RealEstateObject;
+using RealEstateAgency.Application.Contracts.Request;
 using RealEstateAgency.Domain;
 using RealEstateAgency.Infrastructure.Mongo;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection("MongoDb"));
@@ -26,6 +31,8 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(MongoRepository<,>));
 
 builder.Services.AddScoped<IClientCRUDService, ClientService>();
+builder.Services.AddScoped<IRealEstateObjectCRUDService, RealEstateObjectService>();
+builder.Services.AddScoped<IRequestCRUDService, RequestService>();
 
 var app = builder.Build();
 
