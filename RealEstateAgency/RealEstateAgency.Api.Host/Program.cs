@@ -16,45 +16,36 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMapster();
 
-builder.Services.Configure<MongoDbSettings>(
-    builder.Configuration.GetSection("MongoDb"));
-
-builder.Services.AddSingleton<IMongoClient>(sp =>
+builder.Services.AddCors(options =>
 {
-    var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
-    return new MongoClient(settings.ConnectionString);
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
 });
 
+var mongoConnectionString = builder.Configuration.GetConnectionString("mongo")
+    ?? throw new InvalidOperationException("MongoDB connection string 'mongo' is missing.");
+
+builder.Services.AddSingleton<IMongoClient>(_ => new MongoClient(mongoConnectionString));
+
+const string databaseName = "RealEstateAgency";
 builder.Services.AddSingleton<IMongoDatabase>(sp =>
-{
-    var client = sp.GetRequiredService<IMongoClient>();
-    var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
-    return client.GetDatabase(settings.DatabaseName);
-});
+    sp.GetRequiredService<IMongoClient>().GetDatabase(databaseName));
 
-builder.Services.AddScoped<IClientRepository>(sp =>
-    (IClientRepository)new MongoRepository<Client, int>(
-        sp.GetRequiredService<IMongoDatabase>(),
-        "Clients"
-    ));
-
-builder.Services.AddScoped<IRealEstateObjectRepository>(sp =>
-    (IRealEstateObjectRepository)new MongoRepository<RealEstateObject, int>(
-        sp.GetRequiredService<IMongoDatabase>(),
-        "RealEstateObjects"
-    ));
-
-builder.Services.AddScoped<IRequestRepository>(sp =>
-    (IRequestRepository)new MongoRepository<Request, int>(
-        sp.GetRequiredService<IMongoDatabase>(),
-        "Requests"
-    ));
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IRealEstateObjectRepository, RealEstateObjectRepository>();
+builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 
 builder.Services.AddScoped<IClientCRUDService, ClientService>();
 builder.Services.AddScoped<IRealEstateObjectCRUDService, RealEstateObjectService>();
 builder.Services.AddScoped<IRequestCRUDService, RequestService>();
 
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -6,5 +6,5 @@
 public record ClientCreateUpdateDto(
     string FullName,
     string PassportNumber,
-    string Phones
+    string Phone
 );

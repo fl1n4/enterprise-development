@@ -7,9 +7,9 @@ public class MongoRepository<TEntity, TKey> : IRepository<TEntity, TKey>
     where TEntity : class
     where TKey : struct
 {
-    private readonly IMongoCollection<TEntity> _collection;
+    protected readonly IMongoCollection<TEntity> _collection;
 
-    public MongoRepository(IMongoDatabase database, string collectionName)
+    protected MongoRepository(IMongoDatabase database, string collectionName)
     {
         _collection = database.GetCollection<TEntity>(collectionName);
     }
