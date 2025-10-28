@@ -3,7 +3,8 @@
 namespace RealEstateAgency.Application.Contracts.RealEstateObject;
 
 /// <summary>
-/// DTO for creating or updating a real estate object.
+/// Data transfer object for creating or updating <see cref="RealEstateObject"/> entities
+/// Includes cadastral number, address, property characteristics, and purpose information
 /// </summary>
 public record RealEstateObjectCreateUpdateDto(
     string CadastralNumber,

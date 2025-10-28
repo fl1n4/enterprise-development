@@ -1,12 +1,10 @@
 using Mapster;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using RealEstateAgency.Application.Contracts.Client;
 using RealEstateAgency.Application.Contracts.RealEstateObject;
 using RealEstateAgency.Application.Contracts.Request;
 using RealEstateAgency.Application.Services;
 using RealEstateAgency.Domain;
-using RealEstateAgency.Domain.Entities;
 using RealEstateAgency.Infrastructure.Mongo;
 
 var builder = WebApplication.CreateBuilder(args);

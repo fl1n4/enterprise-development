@@ -1,5 +1,11 @@
 ﻿using RealEstateAgency.Domain.Enums;
+
 namespace RealEstateAgency.Application.Contracts.RealEstateObject;
+
+/// <summary>
+/// Data transfer object representing a <see cref="RealEstateObject"/> entity
+/// Contains cadastral number, address, property characteristics, and purpose information
+/// </summary>
 public record RealEstateObjectDto(
     int Id, 
     string CadastralNumber, 

@@ -1,6 +1,7 @@
 ﻿namespace RealEstateAgency.Application.Contracts.Client;
 
 /// <summary>
-/// Service interface for full CRUD operations on clients.
+/// Interface defining CRUD operations for managing <see cref="ClientDto"/> entities
+/// Uses <see cref="ClientCreateUpdateDto"/> for create and update operations
 /// </summary>
 public interface IClientCRUDService : IApplicationCrudService<ClientDto, ClientCreateUpdateDto, int>{}
