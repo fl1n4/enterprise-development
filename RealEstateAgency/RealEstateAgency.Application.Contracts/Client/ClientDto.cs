@@ -1,11 +1,15 @@
 ﻿namespace RealEstateAgency.Application.Contracts.Client;
 
 /// <summary>
-/// Data transfer object representing a <see cref="Client"/> entity
-/// Contains personal information such as full name, passport number, and phone number
+/// DTO representing a client entity.
 /// </summary>
+/// <param name="Id">Unique identifier of the client.</param>
+/// <param name="FullName">Full name of the client.</param>
+/// <param name="PassportNumber">Passport number used as a unique identifier.</param>
+/// <param name="Phone">Contact phone number of the client.</param>
 public record ClientDto(
     int Id, 
     string FullName, 
     string PassportNumber, 
-    string Phone);
+    string Phone
+);

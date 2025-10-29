@@ -3,9 +3,13 @@
 namespace RealEstateAgency.Application.Contracts.Request;
 
 /// <summary>
-/// Data transfer object for creating or updating <see cref="Request"/> entities
-/// Includes identifiers for client and property, request type, amount, and creation date
+/// DTO for creating or updating a request.
 /// </summary>
+/// <param name="ClientId">Identifier of the client associated with the request.</param>
+/// <param name="PropertyId">Identifier of the property associated with the request.</param>
+/// <param name="Type">Type of the request (Buy or Sell).</param>
+/// <param name="Amount">Requested amount in the transaction.</param>
+/// <param name="DateCreated">Date when the request was created.</param>
 public record RequestCreateUpdateDto(
     int ClientId,
     int PropertyId,

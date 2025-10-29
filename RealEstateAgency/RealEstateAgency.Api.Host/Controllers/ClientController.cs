@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RealEstateAgency.Application.Contracts.Client;
+using RealEstateAgency.Domain.Enums;
 
 namespace RealEstateAgency.Api.Host.Controllers;
 
@@ -60,5 +61,52 @@ public class ClientController(IClientCRUDService service) : ControllerBase
     {
         var deleted = await service.Delete(id);
         return deleted ? NoContent() : NotFound();
+    }
+
+    /// <summary>
+    /// Retrieves clients who made sell requests within the specified period
+    /// </summary>
+    /// <param name="from">Start date of the period</param>
+    /// <param name="to">End date of the period</param>
+    /// <returns>List of <see cref="ClientDto"/> matching the criteria</returns>
+    [HttpGet("sellers")]
+    public async Task<ActionResult<IList<ClientDto>>> GetSellersByPeriod(DateOnly from, DateOnly to)
+    {
+        var clients = await service.GetSellersByPeriod(from, to);
+        return Ok(clients);
+    }
+
+    /// <summary>
+    /// Retrieves top 5 clients grouped by request type (Buy/Sell)
+    /// </summary>
+    /// <returns>Dictionary with <see cref="RequestType"/> as key and list of <see cref="ClientDto"/> as value</returns>
+    [HttpGet("top-clients")]
+    public async Task<ActionResult<Dictionary<RequestType, List<ClientDto>>>> GetTop5ClientsByRequestType()
+    {
+        var result = await service.GetTop5ClientsByRequestType();
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Retrieves clients who submitted requests with the minimum amount
+    /// </summary>
+    /// <returns>List of <see cref="ClientDto"/> with the lowest request amount</returns>
+    [HttpGet("clients-with-min-amount")]
+    public async Task<ActionResult<IList<ClientDto>>> GetClientsWithMinRequestAmount()
+    {
+        var result = await service.GetClientsWithMinRequestAmount();
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Retrieves clients who submitted buy requests for a specific property type
+    /// </summary>
+    /// <param name="type">The property type to filter by</param>
+    /// <returns>List of <see cref="ClientDto"/> sorted alphabetically by full name</returns>
+    [HttpGet("clients-by-property-type/{type}")]
+    public async Task<ActionResult<IList<ClientDto>>> GetClientsByPropertyType(PropertyType type)
+    {
+        var result = await service.GetClientsByPropertyType(type);
+        return Ok(result);
     }
 }

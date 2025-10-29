@@ -1,7 +1,10 @@
 ﻿using MapsterMapper;
+using RealEstateAgency.Application.Contracts.Client;
+using RealEstateAgency.Application.Contracts.RealEstateObject;
 using RealEstateAgency.Application.Contracts.Request;
 using RealEstateAgency.Domain;
 using RealEstateAgency.Domain.Entities;
+using RealEstateAgency.Domain.Enums;
 
 namespace RealEstateAgency.Application.Services;
 
@@ -75,4 +78,39 @@ public class RequestService(
     /// <returns>A list of <see cref="RequestDto"/> entities</returns>
     public async Task<IList<RequestDto>> GetAll() =>
         mapper.Map<List<RequestDto>>(await repository.GetAll());
+
+    /// <summary>
+    /// Retrieves the client associated with a specific request
+    /// </summary>
+    public async Task<ClientDto> GetClientByRequestId(int requestId)
+    {
+        var request = await repository.Get(requestId)
+                      ?? throw new KeyNotFoundException($"Request with ID {requestId} not found");
+
+        var client = request.Client;
+        return mapper.Map<ClientDto>(client);
+    }
+
+    /// <summary>
+    /// Retrieves the property associated with a specific request
+    /// </summary>
+    public async Task<RealEstateObjectDto> GetPropertyByRequestId(int requestId)
+    {
+        var request = await repository.Get(requestId)
+                      ?? throw new KeyNotFoundException($"Request with ID {requestId} not found");
+
+        var property = request.Property;
+        return mapper.Map<RealEstateObjectDto>(property);
+    }
+
+    /// <summary>
+    /// Counts requests grouped by property type
+    /// </summary>
+    public async Task<Dictionary<PropertyType, int>> GetRequestCountByPropertyType()
+    {
+        var requests = await repository.GetAll();
+        return requests
+            .GroupBy(r => r.Property.Type)
+            .ToDictionary(g => g.Key, g => g.Count());
+    }
 }

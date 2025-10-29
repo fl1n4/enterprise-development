@@ -22,8 +22,22 @@ BsonSerializer.RegisterSerializer<RequestType>(new EnumSerializer<RequestType>(B
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddMapster();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+        .Where(a => a.GetName().Name!.StartsWith("RealEstateAgency"))
+        .Distinct();
+
+    foreach (var assembly in assemblies)
+    {
+        var xmlFile = $"{assembly.GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        if (File.Exists(xmlPath))
+            c.IncludeXmlComments(xmlPath);
+    }
+});
 
 builder.Services.AddCors(options =>
 {
@@ -57,6 +71,8 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
+
+
 
 var app = builder.Build();
 
