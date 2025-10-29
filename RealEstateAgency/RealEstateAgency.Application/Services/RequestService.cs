@@ -14,7 +14,6 @@ public class RequestService(
     IMapper mapper)
     : IRequestCRUDService
 {
-    private static int _nextId = 1;
 
     /// <summary>
     /// Creates a new request entity
@@ -24,7 +23,11 @@ public class RequestService(
     public async Task<RequestDto> Create(RequestCreateUpdateDto dto)
     {
         var entity = mapper.Map<Request>(dto);
-        entity.Id = Interlocked.Increment(ref _nextId);
+
+        var allRequests = await repository.GetAll();
+        var lastId = allRequests.Any() ? allRequests.Max(r => r.Id) : 0;
+        entity.Id = lastId + 1;
+
         var created = await repository.Create(entity);
         return mapper.Map<RequestDto>(created);
     }

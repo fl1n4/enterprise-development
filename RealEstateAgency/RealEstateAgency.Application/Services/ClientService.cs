@@ -14,7 +14,6 @@ public class ClientService(
     IMapper mapper)
     : IClientCRUDService
 {
-    private static int _nextId = 1;
 
     /// <summary>
     /// Creates a new client entity
@@ -24,7 +23,12 @@ public class ClientService(
     public async Task<ClientDto> Create(ClientCreateUpdateDto dto)
     {
         var entity = mapper.Map<Client>(dto);
-        entity.Id = GenerateNewId();
+
+        // Генерация нового Id
+        var allClients = await repository.GetAll();
+        var lastId = allClients.Any() ? allClients.Max(c => c.Id) : 0;
+        entity.Id = lastId + 1;
+
         var created = await repository.Create(entity);
         return mapper.Map<ClientDto>(created);
     }
@@ -72,10 +76,4 @@ public class ClientService(
     /// <returns>A list of <see cref="ClientDto"/> entities</returns>
     public async Task<IList<ClientDto>> GetAll() =>
         mapper.Map<List<ClientDto>>(await repository.GetAll());
-
-    /// <summary>
-    /// Generates a new unique identifier for a client
-    /// </summary>
-    /// <returns>The new client identifier</returns>
-    private int GenerateNewId() => Interlocked.Increment(ref _nextId);
 }

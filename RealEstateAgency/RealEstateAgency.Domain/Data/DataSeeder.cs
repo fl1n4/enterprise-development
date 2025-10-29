@@ -32,70 +32,70 @@ public class RealEstateSeed
         Clients.AddRange(new[]
         {
             new Client 
-            { 
+            {
                 Id = 1,
                 FullName = "Иванов Иван Иванович",
                 PassportNumber = "4000 123456",
                 Phone = "79001112233" 
             },
             new Client 
-            { 
+            {
                 Id = 2,
                 FullName = "Петрова Анна Сергеевна",
                 PassportNumber = "4001 654321",
                 Phone = "79002223344" 
             },
-            new Client 
+            new Client
             {
                 Id = 3,
                 FullName = "Сидоров Павел Дмитриевич",
                 PassportNumber = "4002 987654",
-                Phone = "79003334455" 
+                Phone = "79003334455"
             },
-            new Client 
-            { 
+            new Client
+            {
                 Id = 4,
                 FullName = "Кузнецова Мария Александровна",
                 PassportNumber = "4003 456789",
-                Phone = "79004445566" 
+                Phone = "79004445566"
             },
-            new Client 
-            { 
+            new Client
+            {
                 Id = 5,
                 FullName = "Смирнов Алексей Игоревич",
                 PassportNumber = "4004 321987",
-                Phone = "79005556677" 
+                Phone = "79005556677"
             },
-            new Client 
-            { 
+            new Client
+            {
                 Id = 6,
                 FullName = "Васильев Николай Петрович",
                 PassportNumber = "4005 789123",
-                Phone = "79006667788" 
+                Phone = "79006667788"
             },
-            new Client 
-            { 
+            new Client
+            {
                 Id = 7,
                 FullName = "Морозова Екатерина Олеговна",
                 PassportNumber = "4006 147258",
-                Phone = "79007778899" 
+                Phone = "79007778899"
             },
-            new Client 
-            { 
+            new Client
+            {
                 Id = 8,
                 FullName = "Громов Артём Сергеевич",
                 PassportNumber = "4007 369258",
-                Phone = "79008889900" 
+                Phone = "79008889900"
             },
-            new Client 
-            { 
+            new Client
+            {
                 Id = 9,
                 FullName = "Лебедева Дарья Андреевна",
                 PassportNumber = "4008 951753",
-                Phone = "79009990011" 
+                Phone = "79009990011"
             },
             new Client 
-            { 
+            {
                 Id = 10,
                 FullName = "Попов Дмитрий Валерьевич",
                 PassportNumber = "4009 753159",

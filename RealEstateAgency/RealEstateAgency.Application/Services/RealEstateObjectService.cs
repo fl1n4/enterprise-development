@@ -14,7 +14,6 @@ public class RealEstateObjectService(
     IMapper mapper)
     : IRealEstateObjectCRUDService
 {
-    private static int _nextId = 1;
 
     /// <summary>
     /// Creates a new real estate object entity
@@ -24,7 +23,11 @@ public class RealEstateObjectService(
     public async Task<RealEstateObjectDto> Create(RealEstateObjectCreateUpdateDto dto)
     {
         var entity = mapper.Map<RealEstateObject>(dto);
-        entity.Id = Interlocked.Increment(ref _nextId);
+
+        var allObjects = await repository.GetAll();
+        var lastId = allObjects.Any() ? allObjects.Max(o => o.Id) : 0;
+        entity.Id = lastId + 1;
+
         var created = await repository.Create(entity);
         return mapper.Map<RealEstateObjectDto>(created);
     }
