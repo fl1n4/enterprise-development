@@ -147,8 +147,9 @@ public class ClientService(
         var requests = await RequestRepository.GetRequests();
 
         var clients = requests
-            .Where(r => r.Property.Type == type && r.Type == RequestType.Buy)
+            .Where(r => r.Property != null && r.Type == RequestType.Buy && r.Property.Type == type)
             .Select(r => r.Client)
+            .Where(c => c != null)
             .Distinct()
             .OrderBy(c => c.FullName)
             .ToList();
