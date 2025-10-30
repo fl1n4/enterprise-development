@@ -132,7 +132,6 @@ public class RequestController(IRequestCRUDService service, ILogger<RequestContr
     /// <returns>NoContent if deletion was successful, otherwise NotFound</returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Delete(int id)
     {
