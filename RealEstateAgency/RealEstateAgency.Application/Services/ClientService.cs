@@ -1,5 +1,6 @@
 ﻿using MapsterMapper;
 using RealEstateAgency.Application.Contracts.Client;
+using RealEstateAgency.Application.Contracts.Request;
 using RealEstateAgency.Domain;
 using RealEstateAgency.Domain.Entities;
 using RealEstateAgency.Domain.Enums;
@@ -26,7 +27,6 @@ public class ClientService(
     {
         var entity = mapper.Map<Client>(dto);
 
-        // Генерация нового Id
         var allClients = await ClientRepository.GetAll();
         var lastId = allClients.Any() ? allClients.Max(c => c.Id) : 0;
         entity.Id = lastId + 1;
@@ -154,5 +154,20 @@ public class ClientService(
             .ToList();
 
         return mapper.Map<List<ClientDto>>(clients);
+    }
+
+    /// <summary>
+    /// Retrieves all requests made by a specific client
+    /// </summary>
+    /// <param name="clientId">The identifier of the client</param>
+    /// <returns>List of <see cref="RequestDto"/> associated with the client</returns>
+    public async Task<IList<RequestDto>> GetRequestsByClientId(int clientId)
+    {
+        var requests = await RequestRepository.GetRequests();
+        var clientRequests = requests
+            .Where(r => r.Client.Id == clientId)
+            .ToList();
+
+        return mapper.Map<List<RequestDto>>(clientRequests);
     }
 }

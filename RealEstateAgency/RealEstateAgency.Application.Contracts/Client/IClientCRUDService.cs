@@ -1,4 +1,5 @@
-﻿using RealEstateAgency.Domain.Enums;
+﻿using RealEstateAgency.Application.Contracts.Request;
+using RealEstateAgency.Domain.Enums;
 
 namespace RealEstateAgency.Application.Contracts.Client;
 
@@ -38,4 +39,11 @@ public interface IClientCRUDService : IApplicationCrudService<ClientDto, ClientC
     /// <param name="type">The property type to filter clients by.</param>
     /// <returns>A list of <see cref="ClientDto"/> representing clients interested in that property type.</returns>
     public Task<IList<ClientDto>> GetClientsByPropertyType(PropertyType type);
+
+    /// <summary>
+    /// Retrieves all requests associated with a specific client.
+    /// </summary>
+    /// <param name="clientId">The unique identifier of the client whose requests are to be retrieved.</param>
+    /// <returns>A list of <see cref="RequestDto"/> representing the client's requests.</returns>
+    public Task<IList<RequestDto>> GetRequestsByClientId(int clientId);
 }

@@ -6,11 +6,24 @@
 /// <typeparam name="TDto">DTO type used for GET requests</typeparam>
 /// <typeparam name="TCreateUpdateDto">DTO type used for POST/PUT requests</typeparam>
 /// <typeparam name="TKey">Type of the DTO identifier</typeparam>
-public interface IApplicationCrudService<TDto, TCreateUpdateDto, TKey> : IApplicationReadService<TDto, TKey>
+public interface IApplicationCrudService<TDto, TCreateUpdateDto, TKey>
     where TDto : class
     where TCreateUpdateDto : class
     where TKey : struct
 {
+    /// <summary>
+    /// Retrieves all DTOs.
+    /// </summary>
+    /// <returns>A list of all DTOs</returns>
+    public Task<IList<TDto>> GetAll();
+
+    /// <summary>
+    /// Retrieves a DTO by its identifier
+    /// </summary>
+    /// <param name="dtoId">The DTO identifier</param>
+    /// <returns>The found DTO</returns>
+    public Task<TDto> Get(TKey dtoId);
+
     /// <summary>
     /// Creates a new DTO
     /// </summary>
