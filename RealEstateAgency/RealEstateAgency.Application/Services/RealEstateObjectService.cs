@@ -1,5 +1,7 @@
 ﻿using MapsterMapper;
+using RealEstateAgency.Application.Contracts;
 using RealEstateAgency.Application.Contracts.RealEstateObject;
+using RealEstateAgency.Application.Contracts.Request;
 using RealEstateAgency.Domain;
 using RealEstateAgency.Domain.Entities;
 
@@ -11,6 +13,7 @@ namespace RealEstateAgency.Application.Services;
 /// </summary>
 public class RealEstateObjectService(
     IRealEstateObjectRepository repository,
+    IRequestRepository RequestRepository,
     IMapper mapper)
     : IRealEstateObjectCRUDService
 {
@@ -75,4 +78,16 @@ public class RealEstateObjectService(
     /// <returns>A list of <see cref="RealEstateObjectDto"/> entities</returns>
     public async Task<IList<RealEstateObjectDto>> GetAll() =>
         mapper.Map<List<RealEstateObjectDto>>(await repository.GetAll());
+
+    public async Task<IList<RequestDto>> GetRequestsByPropertyId(int propertyId)
+    {
+        var property = await repository.Get(propertyId)
+                       ?? throw new KeyNotFoundException($"Property with ID {propertyId} not found.");
+        var requests = await RequestRepository.GetRequests();
+        var propertyRequests = requests
+            .Where(r => r.Property != null && r.Property.Id == propertyId)
+            .ToList();
+
+        return mapper.Map<List<RequestDto>>(propertyRequests);
+    }
 }
