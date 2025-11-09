@@ -1,6 +1,6 @@
-﻿using BookStore.Application.Contracts.BookAuthors;
-using BookStore.Application.Contracts.Protos;
-using BookStore.Infrastructure.RabbitMq;
+﻿using RealEstateAgency.Application.Contracts.Client;
+
+using RealEstateAgency.Infrastructure.RabbitMq;
 
 namespace RealEstateAgency.Api.Host;
 /// <summary>
@@ -23,9 +23,6 @@ internal static class WebApplicationBuilderExtensions
         _ = configuration["Generator"] switch
         {
             "RabbitMq" => AddRabbitMq(builder),
-            "Kafka" => AddKafka(builder),
-            "Nats" => AddNats(builder),
-            "Grpc" => AddGrpc(builder),
             _ => throw new FormatException("Unknown parameter in Generator section")
         };
         return builder;
@@ -38,7 +35,8 @@ internal static class WebApplicationBuilderExtensions
     /// <returns>Веб-билдер приложения с зареганными службами RabbitMq</returns>
     private static WebApplicationBuilder AddRabbitMq(this WebApplicationBuilder builder)
     {
-        builder.Services.AddHostedService<BookStoreRabbitMqConsumer>();
-        builder.AddRabbitMQClient("bookstore-rabbitmq");
+        builder.Services.AddHostedService<RealEstateAgencyRabbitMqConsumer>();
+        builder.AddRabbitMQClient("realestateagency-rabbitmq");
         return builder;
     }
+}

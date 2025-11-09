@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Tests", "RealEstateAgency.Tests\RealEstateAgency.Tests.csproj", "{05E37F67-78EC-48BB-B0B5-4C21EF65BF69}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Api.Host", "RealEstateAgency.Api.Host\RealEstateAgency.Api.Host.csproj", "{14235258-CF4E-19E7-1E02-BD59ADDE927B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{696DB97A-B5A3-4715-A62B-39D465319FE0} = {696DB97A-B5A3-4715-A62B-39D465319FE0}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.AppHost", "RealEstateAgency.AppHost\RealEstateAgency.AppHost.csproj", "{3525F433-B90F-4291-91C5-381931FDDCDB}"
 	ProjectSection(ProjectDependencies) = postProject

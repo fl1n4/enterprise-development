@@ -7,78 +7,129 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RealEstateAgency.Application.Contracts.Client;
+using RealEstateAgency.Application.Contracts.RealEstateObject;
+using RealEstateAgency.Application.Contracts.Request;
 
 namespace RealEstateAgency.Infrastructure.RabbitMq;
-    /// <summary>
-    /// Служба для чтения данных из очереди RabbitMQ (RealEstateAgency)
-    /// </summary>
-    public class RealEstateAgencyRabbitMqConsumer : BackgroundService
+
+/// <summary>
+/// Служба для чтения данных из очереди RabbitMQ (RealEstateAgency)
+/// </summary>
+public class RealEstateAgencyRabbitMqConsumer : BackgroundService
+{
+    private readonly IConnection _connection;
+    private readonly IServiceScopeFactory _scopeFactory;
+    private readonly ILogger<RealEstateAgencyRabbitMqConsumer> _logger;
+    private readonly string _queueName;
+
+    public RealEstateAgencyRabbitMqConsumer(
+        IConnection connection,
+        IServiceScopeFactory scopeFactory,
+        IConfiguration configuration,
+        ILogger<RealEstateAgencyRabbitMqConsumer> logger)
     {
-        private readonly IConnection _connection;
-        private readonly IServiceScopeFactory _scopeFactory;
-        private readonly ILogger<RealEstateAgencyRabbitMqConsumer> _logger;
-        private readonly string _queueName;
+        _connection = connection;
+        _scopeFactory = scopeFactory;
+        _logger = logger;
 
-        public RealEstateAgencyRabbitMqConsumer(
-            IConnection connection,
-            IServiceScopeFactory scopeFactory,
-            IConfiguration configuration,
-            ILogger<RealEstateAgencyRabbitMqConsumer> logger)
+        _queueName = configuration.GetSection("RabbitMq")["QueueName"]
+            ?? throw new KeyNotFoundException("RabbitMq:QueueName section is missing in configuration.");
+    }
+
+    /// <inheritdoc/>
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        _logger.LogInformation("Establishing RabbitMQ channel to queue '{queue}'", _queueName);
+
+        stoppingToken.ThrowIfCancellationRequested();
+        var channel = _connection.CreateModel();
+        channel.QueueDeclare(
+            queue: _queueName,
+            durable: true,
+            exclusive: false,
+            autoDelete: false);
+
+        _logger.LogInformation("Started listening to queue '{queue}'", _queueName);
+        var consumer = new EventingBasicConsumer(channel);
+        consumer.Received += async (_, ea) => await ReceiveMessageAsync(ea, stoppingToken);
+
+        channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
+
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Обработка полученного сообщения
+    /// </summary>
+    private async Task ReceiveMessageAsync(BasicDeliverEventArgs args, CancellationToken stoppingToken)
+    {
+        _logger.LogInformation("Received message from queue '{queue}' with routing key '{routingKey}'", _queueName, args.RoutingKey);
+
+        try
         {
-            _connection = connection;
-            _scopeFactory = scopeFactory;
-            _logger = logger;
-
-            _queueName = configuration.GetSection("RabbitMq")["QueueName"]
-                ?? throw new KeyNotFoundException("RabbitMq:QueueName section is missing in configuration.");
-        }
-
-        /// <inheritdoc/>
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            _logger.LogInformation("Establishing RabbitMQ channel to queue '{queue}'", _queueName);
-
             stoppingToken.ThrowIfCancellationRequested();
-            var channel = _connection.CreateModel();
-            channel.QueueDeclare(
-                queue: _queueName,
-                durable: true,
-                exclusive: false,
-                autoDelete: false);
 
-            _logger.LogInformation("Started listening to queue '{queue}'", _queueName);
-            var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += async (_, ea) => await ReceiveMessageAsync(ea, stoppingToken);
+            var json = Encoding.UTF8.GetString(args.Body.ToArray());
 
-            channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
+            using var scope = _scopeFactory.CreateScope();
 
-            return Task.CompletedTask;
+            switch (args.RoutingKey)
+            {
+                case "real-estate.object":
+                    await ProcessRealEstateObject(json, scope);
+                    break;
+                case "client.info":
+                    await ProcessClient(json, scope);
+                    break;
+                case "request.data":
+                    await ProcessRequest(json, scope);
+                    break;
+                default:
+                    _logger.LogWarning("Unknown routing key: {routingKey}", args.RoutingKey);
+                    return;
+            }
+
+            _logger.LogInformation("Processed message from queue '{queue}' with routing key '{routingKey}'", _queueName, args.RoutingKey);
         }
-
-        /// <summary>
-        /// Обработка полученного сообщения
-        /// </summary>
-        private async Task ReceiveMessageAsync(BasicDeliverEventArgs args, CancellationToken stoppingToken)
+        catch (Exception ex)
         {
-            _logger.LogInformation("Received message from queue '{queue}'", _queueName);
-
-            try
-            {
-                stoppingToken.ThrowIfCancellationRequested();
-
-                var json = Encoding.UTF8.GetString(args.Body.ToArray());
-                var propertyContracts = JsonSerializer.Deserialize<List<ClientCreateUpdateDto>>(json)
-                    ?? throw new FormatException("Unable to deserialize PropertyCreateUpdateDto list from message body");
-
-                using var scope = _scopeFactory.CreateScope();
-                var propertyService = scope.ServiceProvider.GetRequiredService<IPropertyService>();
-                await propertyService.ReceiveContractList(propertyContracts);
-
-                _logger.LogInformation("Processed {count} property contracts from queue '{queue}'", propertyContracts.Count, _queueName);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error while processing message from queue '{queue}'", _queueName);
-            }
+            _logger.LogError(ex, "Error while processing message from queue '{queue}'", _queueName);
         }
     }
+
+    private async Task ProcessRealEstateObject(string json, IServiceScope scope)
+    {
+        var realEstateObjects = JsonSerializer.Deserialize<List<RealEstateObjectCreateUpdateDto>>(json)
+            ?? throw new FormatException("Unable to deserialize RealEstateObjectCreateUpdateDto list from message body");
+
+        var service = scope.ServiceProvider.GetRequiredService<IRealEstateObjectCRUDService>();
+        foreach (var dto in realEstateObjects)
+        {
+            await service.Create(dto);
+        }
+    }
+
+    private async Task ProcessClient(string json, IServiceScope scope)
+    {
+        var clients = JsonSerializer.Deserialize<List<ClientCreateUpdateDto>>(json)
+            ?? throw new FormatException("Unable to deserialize ClientCreateUpdateDto list from message body");
+
+        var service = scope.ServiceProvider.GetRequiredService<IClientCRUDService>();
+        foreach (var dto in clients)
+        {
+            await service.Create(dto);
+        }
+    }
+
+    private async Task ProcessRequest(string json, IServiceScope scope)
+    {
+        var requests = JsonSerializer.Deserialize<List<RequestCreateUpdateDto>>(json)
+            ?? throw new FormatException("Unable to deserialize RequestCreateUpdateDto list from message body");
+
+        var service = scope.ServiceProvider.GetRequiredService<IRequestCRUDService>();
+        foreach (var dto in requests)
+        {
+            await service.Create(dto);
+        }
+    }
+}

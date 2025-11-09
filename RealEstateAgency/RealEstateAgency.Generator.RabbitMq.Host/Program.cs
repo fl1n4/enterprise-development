@@ -1,3 +1,4 @@
+using RealEstateAgency.Generator.RabbitMq.Host;
 using RealEstateAgency.Generator.Services;
 using RealEstateAgency.ServiceDefaults;
 

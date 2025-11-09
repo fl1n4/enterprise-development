@@ -18,6 +18,7 @@
     <ProjectReference Include="..\RealEstateAgency.Domain\RealEstateAgency.Domain.csproj" />
     <ProjectReference Include="..\RealEstateAgency.Infrastructure.Mongo\RealEstateAgency.Infrastructure.Mongo.csproj" />
     <ProjectReference Include="..\RealEstateAgency.ServiceDefaults\RealEstateAgency.ServiceDefaults.csproj" />
+	<ProjectReference Include="..\RealEstateAgency.Infrastructure.RabbitMq\RealEstateAgency.Infrastructure.RabbitMq.csproj" />
   </ItemGroup>
 
 </Project>
