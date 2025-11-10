@@ -12,6 +12,7 @@ using RealEstateAgency.Domain.Data;
 using RealEstateAgency.Domain.Entities;
 using RealEstateAgency.Domain.Enums;
 using RealEstateAgency.Infrastructure.Mongo;
+using RealEstateAgency.Infrastructure.RabbitMq;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,6 +58,9 @@ builder.Services.AddSingleton<IMongoClient>(_ => new MongoClient(mongoConnection
 const string databaseName = "RealEstateAgency";
 builder.Services.AddSingleton<IMongoDatabase>(sp =>
     sp.GetRequiredService<IMongoClient>().GetDatabase(databaseName));
+
+builder.AddRabbitMQClient("rabbitmq");
+builder.Services.AddHostedService<RealEstateAgencyRabbitMqConsumer>();
 
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IRealEstateObjectRepository, RealEstateObjectRepository>();

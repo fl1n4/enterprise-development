@@ -4,7 +4,6 @@ namespace RealEstateAgency.Generator.Generator;
 
 public static class ClientGenerator
 {
-
     public static List<ClientCreateUpdateDto> GenerateClients(int count) =>
         new Faker<ClientCreateUpdateDto>()
             .WithRecord()

@@ -5,7 +5,7 @@ using RealEstateAgency.ServiceDefaults;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-builder.AddRabbitMQClient("realestateagency-rabbitmq");
+builder.AddRabbitMQClient("rabbitmq");
 builder.Services.AddScoped<IProducerService, RealEstateAgencyRabbitMqProducer>();
 builder.Services.AddHostedService<RealEstateObjectGeneratorService>();
 builder.Services.AddHostedService<ClientGeneratorService>();
