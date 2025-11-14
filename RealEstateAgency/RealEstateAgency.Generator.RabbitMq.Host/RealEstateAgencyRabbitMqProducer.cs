@@ -2,20 +2,14 @@
 using RealEstateAgency.Application.Contracts.Client;
 using RealEstateAgency.Application.Contracts.RealEstateObject;
 using RealEstateAgency.Application.Contracts.Request;
-using RealEstateAgency.Generator.Services;
+using RealEstateAgency.Generator.RabbitMq.Host.Services;
 using System.Text.Json;
 
-namespace RealEstateAgency.Generator.RabbitMq.Host;
-
-/// <summary>
-/// Provides functionality for publishing client, real estate object,
-/// and request data batches to RabbitMQ using a direct exchange
-/// </summary>
 public class RealEstateAgencyRabbitMqProducer(
     IConfiguration configuration,
     IConnection rabbitMqConnection,
     ILogger<RealEstateAgencyRabbitMqProducer> logger
-) : IProducerService
+) : IProducerService, IDisposable
 {
     private readonly string _queueName =
         configuration.GetSection("RabbitMq")["QueueName"]
@@ -23,111 +17,77 @@ public class RealEstateAgencyRabbitMqProducer(
 
     private const string ExchangeName = "real-estate.exchange";
 
+    // Один канал на весь producer
+    private readonly IModel _channel = rabbitMqConnection.CreateModel();
+
     /// <summary>
     /// Ensures that the required RabbitMQ exchange and queue exist
     /// and binds all relevant routing keys
     /// </summary>
-    private void EnsureExchangeAndQueue(IModel channel)
+    private void EnsureExchangeAndQueue()
     {
-        channel.ExchangeDeclare(exchange: ExchangeName, type: ExchangeType.Direct, durable: true);
-        channel.QueueDeclare(queue: _queueName, durable: true, exclusive: false, autoDelete: false);
+        _channel.ExchangeDeclare(exchange: ExchangeName, type: ExchangeType.Direct, durable: true);
 
-        channel.QueueBind(_queueName, ExchangeName, "client.info");
-        channel.QueueBind(_queueName, ExchangeName, "real-estate.object");
-        channel.QueueBind(_queueName, ExchangeName, "request.data");
+        _channel.QueueDeclare(
+            queue: _queueName,
+            durable: true,
+            exclusive: false,
+            autoDelete: false);
+
+        _channel.QueueBind(_queueName, ExchangeName, "client.info");
+        _channel.QueueBind(_queueName, ExchangeName, "real-estate.object");
+        _channel.QueueBind(_queueName, ExchangeName, "request.data");
     }
 
     /// <summary>
-    /// Publishes a batch of clients to RabbitMQ using the <c>client.info</c> routing key
+    /// Publishes a batch of clients to RabbitMQ using "client.info" routing key
     /// </summary>
-    /// <param name="batch">A collection of client DTOs to send</param>
-    /// <returns>A completed <see cref="Task"/> once the operation is finished</returns>
     public Task SendClientsAsync(IList<ClientCreateUpdateDto> batch)
     {
-        try
-        {
-            logger.LogInformation("Sending a batch of {count} clients to exchange '{exchange}'", batch.Count, ExchangeName);
-            var payload = JsonSerializer.SerializeToUtf8Bytes(batch);
+        EnsureExchangeAndQueue();
 
-            using var channel = rabbitMqConnection.CreateModel();
-            EnsureExchangeAndQueue(channel);
+        var payload = JsonSerializer.SerializeToUtf8Bytes(batch);
+        _channel.BasicPublish(ExchangeName, "client.info", null, payload);
 
-            channel.BasicPublish(
-                exchange: ExchangeName,
-                routingKey: "client.info",
-                basicProperties: null,
-                body: payload
-            );
-
-            return Task.CompletedTask;
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Exception occurred while sending clients batch.");
-            return Task.CompletedTask;
-        }
+        logger.LogInformation("Sent {count} clients", batch.Count);
+        return Task.CompletedTask;
     }
 
     /// <summary>
-    /// Publishes a batch of real estate objects to RabbitMQ
-    /// using the <c>real-estate.object</c> routing key
+    /// Publishes a batch of real estate objects to RabbitMQ using "real-estate.object" routing key
     /// </summary>
-    /// <param name="batch">A collection of real estate object DTOs to send</param>
-    /// <returns>A completed <see cref="Task"/> once the operation is finished</returns>
     public Task SendRealEstateObjectsAsync(IList<RealEstateObjectCreateUpdateDto> batch)
     {
-        try
-        {
-            logger.LogInformation("Sending a batch of {count} real estate objects to exchange '{exchange}'", batch.Count, ExchangeName);
-            var payload = JsonSerializer.SerializeToUtf8Bytes(batch);
+        EnsureExchangeAndQueue();
 
-            using var channel = rabbitMqConnection.CreateModel();
-            EnsureExchangeAndQueue(channel);
+        var payload = JsonSerializer.SerializeToUtf8Bytes(batch);
+        _channel.BasicPublish(ExchangeName, "real-estate.object", null, payload);
 
-            channel.BasicPublish(
-                exchange: ExchangeName,
-                routingKey: "real-estate.object",
-                basicProperties: null,
-                body: payload
-            );
-
-            return Task.CompletedTask;
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Exception occurred while sending real estate objects batch.");
-            return Task.CompletedTask;
-        }
+        logger.LogInformation("Sent {count} real estate objects", batch.Count);
+        return Task.CompletedTask;
     }
 
     /// <summary>
-    /// Publishes a batch of requests to RabbitMQ using the <c>request.data</c> routing key
+    /// Publishes a batch of requests to RabbitMQ using "request.data" routing key
     /// </summary>
-    /// <param name="batch">A collection of request DTOs to send</param>
-    /// <returns>A completed <see cref="Task"/> once the operation is finished</returns>
     public Task SendRequestsAsync(IList<RequestCreateUpdateDto> batch)
     {
-        try
-        {
-            logger.LogInformation("Sending a batch of {count} requests to exchange '{exchange}'", batch.Count, ExchangeName);
-            var payload = JsonSerializer.SerializeToUtf8Bytes(batch);
+        EnsureExchangeAndQueue();
 
-            using var channel = rabbitMqConnection.CreateModel();
-            EnsureExchangeAndQueue(channel);
+        var payload = JsonSerializer.SerializeToUtf8Bytes(batch);
+        _channel.BasicPublish(ExchangeName, "request.data", null, payload);
 
-            channel.BasicPublish(
-                exchange: ExchangeName,
-                routingKey: "request.data",
-                basicProperties: null,
-                body: payload
-            );
+        logger.LogInformation("Sent {count} requests", batch.Count);
+        return Task.CompletedTask;
+    }
 
-            return Task.CompletedTask;
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Exception occurred while sending requests batch.");
-            return Task.CompletedTask;
-        }
+    /// <summary>
+    /// Disposes the RabbitMQ channel
+    /// </summary>
+    public void Dispose()
+    {
+        _channel?.Close();
+        _channel?.Dispose();
+        logger.LogInformation("RabbitMQ Producer disposed");
     }
 }

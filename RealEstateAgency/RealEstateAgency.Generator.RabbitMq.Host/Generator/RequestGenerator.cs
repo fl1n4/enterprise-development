@@ -1,7 +1,8 @@
 ﻿using Bogus;
 using RealEstateAgency.Application.Contracts.Request;
 using RealEstateAgency.Domain.Enums;
-namespace RealEstateAgency.Generator.Generator;
+
+namespace RealEstateAgency.Generator.RabbitMq.Host.Generator;
 
 /// <summary>
 /// Provides functionality for generating random request data for testing

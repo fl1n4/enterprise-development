@@ -1,4 +1,4 @@
-﻿using RealEstateAgency.Generator.RabbitMq.Host;
+﻿using RealEstateAgency.Infrastructure.RabbitMq;
 
 namespace RealEstateAgency.Api.Host;
 

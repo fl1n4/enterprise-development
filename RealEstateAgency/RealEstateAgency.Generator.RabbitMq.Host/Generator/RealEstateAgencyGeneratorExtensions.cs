@@ -1,7 +1,7 @@
 ﻿using Bogus;
 using System.Runtime.CompilerServices;
 
-namespace RealEstateAgency.Generator.Generator;
+namespace RealEstateAgency.Generator.RabbitMq.Host.Generator;
 
 /// <summary>
 /// Provides extensions for configuring Faker behavior used in object generation

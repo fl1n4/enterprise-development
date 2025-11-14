@@ -13,6 +13,7 @@ var generatorHost = builder.AddProject<Projects.RealEstateAgency_Generator_Rabbi
 builder.AddProject<Projects.RealEstateAgency_Api_Host>("realestateagency-api-host")
        .WithReference(mongo)
        .WithReference(rabbitMq)
-       .WithEnvironment("RabbitMq__QueueName", "real-estate-queue");
+       .WithEnvironment("RabbitMq__QueueName", "real-estate-queue")
+       .WaitFor(rabbitMq);
 
 builder.Build().Run();

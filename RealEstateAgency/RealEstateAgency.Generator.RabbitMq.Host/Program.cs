@@ -1,5 +1,5 @@
 using RealEstateAgency.Generator.RabbitMq.Host;
-using RealEstateAgency.Generator.Services;
+using RealEstateAgency.Generator.RabbitMq.Host.Services;
 using RealEstateAgency.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +12,8 @@ builder.AddRabbitMQClient("rabbitmq",
         factory.AutomaticRecoveryEnabled = true;
         factory.NetworkRecoveryInterval = TimeSpan.FromSeconds(5);
         factory.TopologyRecoveryEnabled = true;
+        factory.RequestedHeartbeat = TimeSpan.FromSeconds(30);
+        factory.DispatchConsumersAsync = true;
     });
 
 builder.Services.AddScoped<IProducerService, RealEstateAgencyRabbitMqProducer>();

@@ -1,21 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
 	<PackageReference Include="Aspire.RabbitMQ.Client" Version="9.5.2" />
-	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-	<PackageReference Include="Bogus" Version="35.6.5" />
   </ItemGroup>
 	
   <ItemGroup>
-    <ProjectReference Include="..\RealEstateAgency.ServiceDefaults\RealEstateAgency.ServiceDefaults.csproj" />
 	<ProjectReference Include="..\RealEstateAgency.Application.Contracts\RealEstateAgency.Application.Contracts.csproj" />
+	<ProjectReference Include="..\RealEstateAgency.Generator.RabbitMq.Host\RealEstateAgency.Generator.RabbitMq.Host.csproj" />
   </ItemGroup>
-
 </Project>

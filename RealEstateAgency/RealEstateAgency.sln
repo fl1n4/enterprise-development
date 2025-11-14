@@ -35,14 +35,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Generator.RabbitMq.Host", "RealEstateAgency.Generator.RabbitMq.Host\RealEstateAgency.Generator.RabbitMq.Host.csproj", "{26592005-5040-F5FB-8223-E04505266208}"
 	ProjectSection(ProjectDependencies) = postProject
 		{726A1468-AA49-4778-BF8C-55EDD8464F55} = {726A1468-AA49-4778-BF8C-55EDD8464F55}
-		{AD39BD2F-624A-4642-BA81-431A890D199B} = {AD39BD2F-624A-4642-BA81-431A890D199B}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Generator", "RealEstateAgency.Generator\RealEstateAgency.Generator.csproj", "{AD39BD2F-624A-4642-BA81-431A890D199B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{726A1468-AA49-4778-BF8C-55EDD8464F55} = {726A1468-AA49-4778-BF8C-55EDD8464F55}
-		{B48E1860-0053-4E3A-8E29-3CFE79D9AD2B} = {B48E1860-0053-4E3A-8E29-3CFE79D9AD2B}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Infrastructure.RabbitMq", "RealEstateAgency.Infrastructure.RabbitMq\RealEstateAgency.Infrastructure.RabbitMq.csproj", "{0F927A60-EAED-46D7-8B5A-25720F190FDA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,10 +81,10 @@ Global
 		{26592005-5040-F5FB-8223-E04505266208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26592005-5040-F5FB-8223-E04505266208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26592005-5040-F5FB-8223-E04505266208}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD39BD2F-624A-4642-BA81-431A890D199B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD39BD2F-624A-4642-BA81-431A890D199B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD39BD2F-624A-4642-BA81-431A890D199B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD39BD2F-624A-4642-BA81-431A890D199B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F927A60-EAED-46D7-8B5A-25720F190FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F927A60-EAED-46D7-8B5A-25720F190FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F927A60-EAED-46D7-8B5A-25720F190FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F927A60-EAED-46D7-8B5A-25720F190FDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,7 +12,8 @@ using RealEstateAgency.Domain.Data;
 using RealEstateAgency.Domain.Entities;
 using RealEstateAgency.Domain.Enums;
 using RealEstateAgency.Infrastructure.Mongo;
-using RealEstateAgency.Generator.RabbitMq.Host;
+using RealEstateAgency.Infrastructure.RabbitMq;
+using RealEstateAgency.ServiceDefaults;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,7 @@ BsonSerializer.RegisterSerializer<RequestType>(new EnumSerializer<RequestType>(B
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddMapster();
+builder.AddServiceDefaults();
 
 builder.Services.AddSwaggerGen(c =>
 {

@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using RealEstateAgency.Application.Contracts.Client;
-namespace RealEstateAgency.Generator.Generator;
+
+namespace RealEstateAgency.Generator.RabbitMq.Host.Generator;
 
 /// <summary>
 /// Provides functionality for generating random client data for testing

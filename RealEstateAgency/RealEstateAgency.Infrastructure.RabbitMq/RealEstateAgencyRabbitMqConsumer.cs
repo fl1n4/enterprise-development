@@ -5,8 +5,12 @@ using RabbitMQ.Client.Events;
 using RealEstateAgency.Application.Contracts.Client;
 using RealEstateAgency.Application.Contracts.RealEstateObject;
 using RealEstateAgency.Application.Contracts.Request;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 
-namespace RealEstateAgency.Generator.RabbitMq.Host;
+namespace RealEstateAgency.Infrastructure.RabbitMq;
 
 /// <summary>
 /// Background service responsible for consuming messages from RabbitMQ,

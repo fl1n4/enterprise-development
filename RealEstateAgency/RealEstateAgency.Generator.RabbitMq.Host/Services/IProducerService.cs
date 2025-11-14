@@ -2,7 +2,7 @@
 using RealEstateAgency.Application.Contracts.RealEstateObject;
 using RealEstateAgency.Application.Contracts.Request;
 
-namespace RealEstateAgency.Generator.Services;
+namespace RealEstateAgency.Generator.RabbitMq.Host.Services;
 
 /// <summary>
 /// Defines a producer service responsible for publishing generated data

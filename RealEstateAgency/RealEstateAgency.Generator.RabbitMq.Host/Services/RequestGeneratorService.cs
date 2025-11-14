@@ -1,10 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using RealEstateAgency.Generator.Generator;
+﻿using RealEstateAgency.Generator.RabbitMq.Host.Generator;
 
-namespace RealEstateAgency.Generator.Services;
+namespace RealEstateAgency.Generator.RabbitMq.Host.Services;
 
 /// <summary>
 /// Background service responsible for generating request data in batches
