@@ -28,7 +28,7 @@ public class ClientGeneratorService(
         using var scope = scopeFactory.CreateScope();
         var producer = scope.ServiceProvider.GetRequiredService<IProducerService>();
 
-        while (counter < payloadLimit)
+        while (counter < payloadLimit && !stoppingToken.IsCancellationRequested)
         {
             var clients = ClientGenerator.GenerateClients(batchSize);
             await producer.SendClientsAsync(clients);
@@ -37,6 +37,6 @@ public class ClientGeneratorService(
             counter += batchSize;
         }
 
-        logger.LogInformation("ClientGeneratorService finished sending {total} messages", _payloadLimit);
+        logger.LogInformation("ClientGeneratorService finished sending {total} messages", counter);
     }
 }

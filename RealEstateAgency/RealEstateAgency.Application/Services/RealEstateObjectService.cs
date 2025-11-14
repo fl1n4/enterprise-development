@@ -81,11 +81,10 @@ public class RealEstateObjectService(
 
     public async Task<IList<RequestDto>> GetRequestsByPropertyId(int propertyId)
     {
-        var property = await repository.Get(propertyId)
-                       ?? throw new KeyNotFoundException($"Property with ID {propertyId} not found.");
         var requests = await RequestRepository.GetRequests();
+
         var propertyRequests = requests
-            .Where(r => r.Property != null && r.Property.Id == propertyId)
+            .Where(r => r.PropertyId == propertyId)
             .ToList();
 
         return mapper.Map<List<RequestDto>>(propertyRequests);

@@ -24,11 +24,9 @@ public class RealEstateAgencyRabbitMqProducer(
 
     private void EnsureExchangeAndQueue(IModel channel)
     {
-        // Объявляем direct exchange и очередь (идемпотентно — можно вызывать сколько угодно)
         channel.ExchangeDeclare(exchange: ExchangeName, type: ExchangeType.Direct, durable: true);
         channel.QueueDeclare(queue: _queueName, durable: true, exclusive: false, autoDelete: false);
 
-        // Привязываем routing keys к одной очереди
         channel.QueueBind(_queueName, ExchangeName, "client.info");
         channel.QueueBind(_queueName, ExchangeName, "real-estate.object");
         channel.QueueBind(_queueName, ExchangeName, "request.data");

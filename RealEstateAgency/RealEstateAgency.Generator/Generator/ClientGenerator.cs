@@ -9,6 +9,6 @@ public static class ClientGenerator
             .WithRecord()
             .RuleFor(dto => dto.FullName, f => f.Person.FullName)
             .RuleFor(dto => dto.PassportNumber, f => f.Random.AlphaNumeric(10))
-            .RuleFor(dto => dto.Phone, f => f.Phone.PhoneNumber())
+            .RuleFor(dto => dto.Phone, f => $"79{f.Random.Int(100000000, 999999999)}")
             .Generate(count);
 }

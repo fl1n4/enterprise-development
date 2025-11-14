@@ -12,7 +12,7 @@ using RealEstateAgency.Domain.Data;
 using RealEstateAgency.Domain.Entities;
 using RealEstateAgency.Domain.Enums;
 using RealEstateAgency.Infrastructure.Mongo;
-using RealEstateAgency.Infrastructure.RabbitMq;
+using RealEstateAgency.Generator.RabbitMq.Host;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);

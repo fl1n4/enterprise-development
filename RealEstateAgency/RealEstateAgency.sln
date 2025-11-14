@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Tests", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Api.Host", "RealEstateAgency.Api.Host\RealEstateAgency.Api.Host.csproj", "{14235258-CF4E-19E7-1E02-BD59ADDE927B}"
 	ProjectSection(ProjectDependencies) = postProject
-		{696DB97A-B5A3-4715-A62B-39D465319FE0} = {696DB97A-B5A3-4715-A62B-39D465319FE0}
+		{26592005-5040-F5FB-8223-E04505266208} = {26592005-5040-F5FB-8223-E04505266208}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.AppHost", "RealEstateAgency.AppHost\RealEstateAgency.AppHost.csproj", "{3525F433-B90F-4291-91C5-381931FDDCDB}"
@@ -43,8 +43,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Generator"
 		{726A1468-AA49-4778-BF8C-55EDD8464F55} = {726A1468-AA49-4778-BF8C-55EDD8464F55}
 		{B48E1860-0053-4E3A-8E29-3CFE79D9AD2B} = {B48E1860-0053-4E3A-8E29-3CFE79D9AD2B}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateAgency.Infrastructure.RabbitMq", "RealEstateAgency.Infrastructure.RabbitMq\RealEstateAgency.Infrastructure.RabbitMq.csproj", "{696DB97A-B5A3-4715-A62B-39D465319FE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,10 +90,6 @@ Global
 		{AD39BD2F-624A-4642-BA81-431A890D199B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD39BD2F-624A-4642-BA81-431A890D199B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD39BD2F-624A-4642-BA81-431A890D199B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{696DB97A-B5A3-4715-A62B-39D465319FE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{696DB97A-B5A3-4715-A62B-39D465319FE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{696DB97A-B5A3-4715-A62B-39D465319FE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{696DB97A-B5A3-4715-A62B-39D465319FE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

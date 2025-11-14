@@ -252,8 +252,8 @@ public class RealEstateSeed
             new Request
             {
                 Id = 1,
-                Client = Clients[0],
-                Property = Properties[0],
+                ClientId = 2,
+                PropertyId = 1,
                 Type = RequestType.Buy,
                 Amount = 12_500_000,
                 DateCreated = new DateOnly(2025, 9, 15)
@@ -261,8 +261,8 @@ public class RealEstateSeed
             new Request
             {
                 Id = 2,
-                Client = Clients[1],
-                Property = Properties[2],
+                ClientId = 1,
+                PropertyId = 2,
                 Type = RequestType.Sell,
                 Amount = 25_000_000,
                 DateCreated = new DateOnly(2025, 9, 18)
@@ -270,8 +270,8 @@ public class RealEstateSeed
             new Request
             {
                 Id = 3,
-                Client = Clients[2],
-                Property = Properties[1],
+                ClientId = 3,
+                PropertyId = 3,
                 Type = RequestType.Buy,
                 Amount = 14_000_000,
                 DateCreated = new DateOnly(2025, 9, 20)
@@ -279,8 +279,8 @@ public class RealEstateSeed
             new Request
             {
                 Id = 4,
-                Client = Clients[3],
-                Property = Properties[3],
+                ClientId = 4,
+                PropertyId = 4,
                 Type = RequestType.Sell,
                 Amount = 19_000_000,
                 DateCreated = new DateOnly(2025, 9, 22)
@@ -288,8 +288,8 @@ public class RealEstateSeed
             new Request
             {
                 Id = 5,
-                Client = Clients[4],
-                Property = Properties[4],
+                ClientId = 5,
+                PropertyId = 5,
                 Type = RequestType.Sell,
                 Amount = 30_000_000,
                 DateCreated = new DateOnly(2025, 9, 25)
@@ -297,8 +297,8 @@ public class RealEstateSeed
             new Request
             {
                 Id = 6,
-                Client = Clients[5],
-                Property = Properties[5],
+                ClientId = 6,
+                PropertyId = 6,
                 Type = RequestType.Buy,
                 Amount = 9_500_000,
                 DateCreated = new DateOnly(2025, 9, 26)
@@ -306,8 +306,8 @@ public class RealEstateSeed
             new Request
             {
                 Id = 7,
-                Client = Clients[6],
-                Property = Properties[6],
+                ClientId = 7,
+                PropertyId = 7,
                 Type = RequestType.Sell,
                 Amount = 22_000_000,
                 DateCreated = new DateOnly(2025, 9, 27)
@@ -315,8 +315,8 @@ public class RealEstateSeed
             new Request
             {
                 Id = 8,
-                Client = Clients[7],
-                Property = Properties[7],
+                ClientId = 8,
+                PropertyId = 8,
                 Type = RequestType.Buy,
                 Amount = 16_000_000,
                 DateCreated = new DateOnly(2025, 9, 28)
@@ -324,8 +324,8 @@ public class RealEstateSeed
             new Request
             {
                 Id = 9,
-                Client = Clients[8],
-                Property = Properties[8],
+                ClientId = 9,
+                PropertyId = 9,
                 Type = RequestType.Sell,
                 Amount = 28_000_000,
                 DateCreated = new DateOnly(2025, 9, 29)
@@ -333,8 +333,8 @@ public class RealEstateSeed
             new Request
             {
                 Id = 10,
-                Client = Clients[9],
-                Property = Properties[9],
+                ClientId = 10,
+                PropertyId = 10,
                 Type = RequestType.Buy,
                 Amount = 11_000_000,
                 DateCreated = new DateOnly(2025, 9, 30)

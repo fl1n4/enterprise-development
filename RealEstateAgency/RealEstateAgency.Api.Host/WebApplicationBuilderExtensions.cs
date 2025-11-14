@@ -1,6 +1,6 @@
 ﻿using RealEstateAgency.Application.Contracts.Client;
 
-using RealEstateAgency.Infrastructure.RabbitMq;
+using RealEstateAgency.Generator.RabbitMq.Host;
 
 namespace RealEstateAgency.Api.Host;
 /// <summary>

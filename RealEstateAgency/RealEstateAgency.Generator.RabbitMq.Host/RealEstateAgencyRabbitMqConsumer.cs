@@ -1,16 +1,12 @@
 ﻿using System.Text.Json;
 using System.Text;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RealEstateAgency.Application.Contracts.Client;
 using RealEstateAgency.Application.Contracts.RealEstateObject;
 using RealEstateAgency.Application.Contracts.Request;
 
-namespace RealEstateAgency.Infrastructure.RabbitMq;
+namespace RealEstateAgency.Generator.RabbitMq.Host;
 
 /// <summary>
 /// Служба для чтения данных из очереди RabbitMQ (RealEstateAgency)

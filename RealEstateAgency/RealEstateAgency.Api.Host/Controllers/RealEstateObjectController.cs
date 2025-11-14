@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RealEstateAgency.Application.Contracts.RealEstateObject;
 using RealEstateAgency.Application.Contracts.Request;
+using RealEstateAgency.Domain.Entities;
 
 namespace RealEstateAgency.Api.Host.Controllers;
 

@@ -14,6 +14,8 @@ namespace RealEstateAgency.Application.Services;
 /// </summary>
 public class RequestService(
     IRequestRepository repository,
+    IClientRepository clientRepository,
+    IRealEstateObjectRepository realEstateObjectRepository,
     IMapper mapper)
     : IRequestCRUDService
 {
@@ -87,7 +89,8 @@ public class RequestService(
         var request = await repository.Get(requestId)
                       ?? throw new KeyNotFoundException($"Request with ID {requestId} not found");
 
-        var client = request.Client;
+        var client = await clientRepository.Get(request.ClientId)
+                 ?? throw new KeyNotFoundException($"Client with Id={request.ClientId} not found");
         return mapper.Map<ClientDto>(client);
     }
 
@@ -99,7 +102,12 @@ public class RequestService(
         var request = await repository.Get(requestId)
                       ?? throw new KeyNotFoundException($"Request with ID {requestId} not found");
 
-        var property = request.Property;
+        if (request.PropertyId == 0)
+            throw new InvalidOperationException($"Request with ID {requestId} does not have a valid PropertyId");
+
+        var property = await realEstateObjectRepository.Get(request.PropertyId)
+                       ?? throw new KeyNotFoundException($"Property with ID {request.PropertyId} not found");
+
         return mapper.Map<RealEstateObjectDto>(property);
     }
 
@@ -109,8 +117,22 @@ public class RequestService(
     public async Task<Dictionary<PropertyType, int>> GetRequestCountByPropertyType()
     {
         var requests = await repository.GetAll();
-        return requests
-            .GroupBy(r => r.Property.Type)
-            .ToDictionary(g => g.Key, g => g.Count());
+        var result = new Dictionary<PropertyType, int>();
+
+        foreach (var request in requests)
+        {
+            var property = await GetPropertyByRequestId(request.Id);
+            if (property == null)
+                continue;
+
+            var propertyType = property.Type;
+
+            if (result.ContainsKey(propertyType))
+                result[propertyType]++;
+            else
+                result[propertyType] = 1;
+        }
+
+        return result;
     }
 }

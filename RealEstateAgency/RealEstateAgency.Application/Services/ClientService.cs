@@ -13,6 +13,7 @@ namespace RealEstateAgency.Application.Services;
 /// </summary>
 public class ClientService(
     IClientRepository ClientRepository,
+    IRealEstateObjectRepository RealEstateObjectRepository,
     IRequestRepository RequestRepository,
     IMapper mapper)
     : IClientCRUDService
@@ -85,15 +86,20 @@ public class ClientService(
     public async Task<IList<ClientDto>> GetSellersByPeriod(DateOnly from, DateOnly to)
     {
         var requests = await RequestRepository.GetRequests();
-        var sellers = requests
+
+        var sellers = new List<ClientDto>();
+
+        foreach (var r in requests
             .Where(r => r.Type == RequestType.Sell
                         && r.DateCreated >= from
-                        && r.DateCreated <= to)
-            .Select(r => r.Client)
-            .Distinct()
-            .ToList();
+                        && r.DateCreated <= to))
+        {
+            var client = await ClientRepository.Get(r.ClientId);
+            if (client != null)
+                sellers.Add(mapper.Map<ClientDto>(client));
+        }
 
-        return mapper.Map<List<ClientDto>>(sellers);
+        return sellers.DistinctBy(c => c.Id).ToList();
     }
 
     /// <summary>
@@ -103,23 +109,35 @@ public class ClientService(
     {
         var requests = await RequestRepository.GetRequests();
 
-        var groupedTopClients = requests
-    .Where(r => r.Type != null)
-    .GroupBy(r => r.Type!.Value)
-    .ToDictionary(
-        g => g.Key,
-        g => g.GroupBy(r => r.Client)
-              .Select(cg => new { Client = cg.Key, Count = cg.Count() })
-              .OrderByDescending(x => x.Count)
-              .Take(5)
-              .Select(x => x.Client)
-              .ToList()
-    );
+        var grouped = requests
+            .Where(r => r.Type != null)
+            .GroupBy(r => r.Type!.Value)
+            .ToDictionary(
+                g => g.Key,
+                g => g.GroupBy(r => r.ClientId)
+                      .Select(cg => new { ClientId = cg.Key, Count = cg.Count() })
+                      .OrderByDescending(x => x.Count)
+                      .Take(5)
+                      .Select(x => x.ClientId)
+                      .ToList()
+            );
 
-        return groupedTopClients.ToDictionary(
-            kvp => kvp.Key,
-            kvp => mapper.Map<List<ClientDto>>(kvp.Value)
-        );
+        var result = new Dictionary<RequestType, List<ClientDto>>();
+
+        foreach (var kvp in grouped)
+        {
+            var clients = new List<ClientDto>();
+            foreach (var clientId in kvp.Value)
+            {
+                var client = await ClientRepository.Get(clientId);
+                if (client != null)
+                    clients.Add(mapper.Map<ClientDto>(client));
+            }
+
+            result[kvp.Key] = clients;
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -130,13 +148,21 @@ public class ClientService(
         var requests = await RequestRepository.GetRequests();
         var minAmount = requests.Min(r => r.Amount);
 
-        var clients = requests
+        var clientIds = requests
             .Where(r => r.Amount == minAmount)
-            .Select(r => r.Client)
+            .Select(r => r.ClientId)
             .Distinct()
             .ToList();
 
-        return mapper.Map<List<ClientDto>>(clients);
+        var clients = new List<ClientDto>();
+        foreach (var id in clientIds)
+        {
+            var client = await ClientRepository.Get(id);
+            if (client != null)
+                clients.Add(mapper.Map<ClientDto>(client));
+        }
+
+        return clients;
     }
 
     /// <summary>
@@ -146,15 +172,23 @@ public class ClientService(
     {
         var requests = await RequestRepository.GetRequests();
 
-        var clients = requests
-            .Where(r => r.Property != null && r.Type == RequestType.Buy && r.Property.Type == type)
-            .Select(r => r.Client)
-            .Where(c => c != null)
-            .Distinct()
+        var result = new List<ClientDto>();
+
+        foreach (var r in requests.Where(r => r.Type == RequestType.Buy))
+        {
+            var property = await RealEstateObjectRepository.Get(r.PropertyId);
+            if (property != null && property.Type == type)
+            {
+                var client = await ClientRepository.Get(r.ClientId);
+                if (client != null)
+                    result.Add(mapper.Map<ClientDto>(client));
+            }
+        }
+
+        return result
+            .DistinctBy(c => c.Id)
             .OrderBy(c => c.FullName)
             .ToList();
-
-        return mapper.Map<List<ClientDto>>(clients);
     }
 
     /// <summary>
@@ -166,7 +200,7 @@ public class ClientService(
     {
         var requests = await RequestRepository.GetRequests();
         var clientRequests = requests
-            .Where(r => r.Client.Id == clientId)
+            .Where(r => r.ClientId == clientId)
             .ToList();
 
         return mapper.Map<List<RequestDto>>(clientRequests);

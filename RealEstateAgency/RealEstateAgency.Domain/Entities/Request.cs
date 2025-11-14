@@ -14,12 +14,14 @@ public class Request
     /// <summary>
     /// Client who submitted the request
     /// </summary>
-    public required Client Client { get; set; }
+    public required int ClientId { get; set; }
+    public required int PropertyId { get; set; }
+    //public required Client Client { get; set; }
 
     /// <summary>
     /// Real estate object associated with the request
     /// </summary>
-    public required RealEstateObject Property { get; set; }
+    //public required RealEstateObject Property { get; set; }
 
     /// <summary>
     /// Type of the request (Buy or Sell)

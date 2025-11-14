@@ -33,7 +33,7 @@ public class RealEstateObjectGeneratorService(
         using var scope = scopeFactory.CreateScope();
         var producer = scope.ServiceProvider.GetRequiredService<IProducerService>();
 
-        while (counter < payloadLimit)
+        while (counter < payloadLimit && !stoppingToken.IsCancellationRequested)
         {
             var realEstates = RealEstateObjectGenerator.GenerateRealEstateObjects(batchSize);
             await producer.SendRealEstateObjectsAsync(realEstates);
@@ -42,6 +42,6 @@ public class RealEstateObjectGeneratorService(
             counter += batchSize;
         }
 
-        logger.LogInformation("RealEstateObjectGeneratorService finished sending {total} messages", _payloadLimit);
+        logger.LogInformation("RealEstateObjectGeneratorService finished sending {total} messages", counter);
     }
 }
