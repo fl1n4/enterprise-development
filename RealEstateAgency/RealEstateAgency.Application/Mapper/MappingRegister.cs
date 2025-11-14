@@ -5,6 +5,7 @@ using RealEstateAgency.Domain.Entities;
 using Mapster;
 
 namespace RealEstateAgency.Application.Mapper;
+
 /// <summary>
 /// Global Mapster configuration for mapping between Domain and DTO models
 /// </summary>

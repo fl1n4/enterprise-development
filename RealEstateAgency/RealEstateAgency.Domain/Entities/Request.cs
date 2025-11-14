@@ -11,17 +11,16 @@ public class Request
     /// Unique identifier of the request
     /// </summary>
     public required int Id { get; set; }
-    /// <summary>
-    /// Client who submitted the request
-    /// </summary>
-    public required int ClientId { get; set; }
-    public required int PropertyId { get; set; }
-    //public required Client Client { get; set; }
 
     /// <summary>
-    /// Real estate object associated with the request
+    /// Identifier of the client who submitted the request
     /// </summary>
-    //public required RealEstateObject Property { get; set; }
+    public required int ClientId { get; set; }
+
+    /// <summary>
+    /// Identifier of the property associated with the request
+    /// </summary>
+    public required int PropertyId { get; set; }
 
     /// <summary>
     /// Type of the request (Buy or Sell)

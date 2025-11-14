@@ -5,25 +5,26 @@ using RealEstateAgency.Application.Contracts.Request;
 namespace RealEstateAgency.Generator.Services;
 
 /// <summary>
-/// Интерфес службы, занимающейся отправкой сообщений по шине
+/// Defines a producer service responsible for publishing generated data
+/// to a message broker (RabbitMQ)
 /// </summary>
 public interface IProducerService
 {
     /// <summary>
-    /// Метод для отправки коллекции DTO клиентов
+    /// Publishes a batch of client records
     /// </summary>
-    /// <param name="batch">Коллекция DTO</param>
+    /// <param name="batch">List of client DTOs to send</param>
     public Task SendClientsAsync(IList<ClientCreateUpdateDto> batch);
 
     /// <summary>
-    /// Метод для отправки коллекции DTO объектов недвижимости
+    /// Publishes a batch of real estate object records
     /// </summary>
-    /// <param name="batch">Коллекция DTO</param>
+    /// <param name="batch">List of real estate DTOs to send</param>
     public Task SendRealEstateObjectsAsync(IList<RealEstateObjectCreateUpdateDto> batch);
 
     /// <summary>
-    /// Метод для отправки коллекции DTO заявок
+    /// Publishes a batch of request records
     /// </summary>
-    /// <param name="batch">Коллекция DTO</param>
+    /// <param name="batch">List of request DTOs to send</param>
     public Task SendRequestsAsync(IList<RequestCreateUpdateDto> batch);
 }

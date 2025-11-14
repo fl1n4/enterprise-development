@@ -2,8 +2,16 @@
 using RealEstateAgency.Application.Contracts.Client;
 namespace RealEstateAgency.Generator.Generator;
 
+/// <summary>
+/// Provides functionality for generating random client data for testing
+/// </summary>
 public static class ClientGenerator
 {
+    /// <summary>
+    /// Generates a collection of random clients using predefined faker rules
+    /// </summary>
+    /// <param name="count">Number of clients to generate</param>
+    /// <returns>List of randomly generated <see cref="ClientCreateUpdateDto"/> objects</returns>
     public static List<ClientCreateUpdateDto> GenerateClients(int count) =>
         new Faker<ClientCreateUpdateDto>()
             .WithRecord()

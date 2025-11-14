@@ -9,7 +9,9 @@ using RealEstateAgency.Application.Contracts.Request;
 namespace RealEstateAgency.Generator.RabbitMq.Host;
 
 /// <summary>
-/// Служба для чтения данных из очереди RabbitMQ (RealEstateAgency)
+/// Background service responsible for consuming messages from RabbitMQ,
+/// deserializing them, and delegating processing to the appropriate
+/// scoped CRUD services
 /// </summary>
 public class RealEstateAgencyRabbitMqConsumer : BackgroundService
 {
@@ -18,6 +20,13 @@ public class RealEstateAgencyRabbitMqConsumer : BackgroundService
     private readonly ILogger<RealEstateAgencyRabbitMqConsumer> _logger;
     private readonly string _queueName;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RealEstateAgencyRabbitMqConsumer"/> class.
+    /// </summary>
+    /// <param name="connection">The RabbitMQ connection used to create channels</param>
+    /// <param name="scopeFactory">Factory for creating scoped service providers</param>
+    /// <param name="configuration">Application configuration containing queue settings</param>
+    /// <param name="logger">Logger for diagnostic output</param>
     public RealEstateAgencyRabbitMqConsumer(
         IConnection connection,
         IServiceScopeFactory scopeFactory,
@@ -32,7 +41,11 @@ public class RealEstateAgencyRabbitMqConsumer : BackgroundService
             ?? throw new KeyNotFoundException("RabbitMq:QueueName section is missing in configuration.");
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Starts the RabbitMQ consumer and begins listening for messages
+    /// </summary>
+    /// <param name="stoppingToken">Token used to signal cancellation of the background task</param>
+    /// <returns>A completed <see cref="Task"/> once the consumer is initialized</returns>
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Establishing RabbitMQ channel to queue '{queue}'", _queueName);
@@ -55,8 +68,11 @@ public class RealEstateAgencyRabbitMqConsumer : BackgroundService
     }
 
     /// <summary>
-    /// Обработка полученного сообщения
+    /// Handles a received RabbitMQ message by deserializing the payload
+    /// and delegating processing based on the routing key
     /// </summary>
+    /// <param name="args">The event arguments containing message metadata and payload</param>
+    /// <param name="stoppingToken">Cancellation token</param>
     private async Task ReceiveMessageAsync(BasicDeliverEventArgs args, CancellationToken stoppingToken)
     {
         _logger.LogInformation("Received message from queue '{queue}' with routing key '{routingKey}'", _queueName, args.RoutingKey);
@@ -93,6 +109,11 @@ public class RealEstateAgencyRabbitMqConsumer : BackgroundService
         }
     }
 
+    /// <summary>
+    /// Processes a batch of real estate object DTOs and persists them using the scoped CRUD service
+    /// </summary>
+    /// <param name="json">The raw JSON payload from the message</param>
+    /// <param name="scope">A scoped service provider instance</param>
     private async Task ProcessRealEstateObject(string json, IServiceScope scope)
     {
         var realEstateObjects = JsonSerializer.Deserialize<List<RealEstateObjectCreateUpdateDto>>(json)
@@ -105,6 +126,11 @@ public class RealEstateAgencyRabbitMqConsumer : BackgroundService
         }
     }
 
+    /// <summary>
+    /// Processes a batch of client DTOs and persists them using the scoped CRUD service
+    /// </summary>
+    /// <param name="json">The raw JSON payload from the message</param>
+    /// <param name="scope">A scoped service provider instance</param>
     private async Task ProcessClient(string json, IServiceScope scope)
     {
         var clients = JsonSerializer.Deserialize<List<ClientCreateUpdateDto>>(json)
@@ -117,6 +143,11 @@ public class RealEstateAgencyRabbitMqConsumer : BackgroundService
         }
     }
 
+    /// <summary>
+    /// Processes a batch of request DTOs and persists them using the scoped CRUD service
+    /// </summary>
+    /// <param name="json">The raw JSON payload from the message</param>
+    /// <param name="scope">A scoped service provider instance</param>
     private async Task ProcessRequest(string json, IServiceScope scope)
     {
         var requests = JsonSerializer.Deserialize<List<RequestCreateUpdateDto>>(json)

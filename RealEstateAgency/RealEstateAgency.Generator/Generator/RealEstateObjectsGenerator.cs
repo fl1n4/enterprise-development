@@ -4,15 +4,15 @@ using RealEstateAgency.Domain.Enums;
 namespace RealEstateAgency.Generator.Generator;
 
 /// <summary>
-/// Статический класс для генерации DTO недвижимости
+/// Provides functionality for generating random real estate object data for testing
 /// </summary>
 public static class RealEstateObjectGenerator
 {
     /// <summary>
-    /// Метод для генерации заданного числа DTO объектов недвижимости
+    /// Generates a collection of random real estate objects using predefined faker rules
     /// </summary>
-    /// <param name="count">Число DTO для генерации</param>
-    /// <returns>Коллекция DTO</returns>
+    /// <param name="count">Number of real estate objects to generate</param>
+    /// <returns>List of randomly generated <see cref="RealEstateObjectCreateUpdateDto"/> objects</returns>
     public static List<RealEstateObjectCreateUpdateDto> GenerateRealEstateObjects(int count) =>
         new Faker<RealEstateObjectCreateUpdateDto>()
             .WithRecord()

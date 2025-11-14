@@ -4,15 +4,17 @@ using System.Runtime.CompilerServices;
 namespace RealEstateAgency.Generator.Generator;
 
 /// <summary>
-/// Класс-расширение для генератора DTO
+/// Provides extensions for configuring Faker behavior used in object generation
 /// </summary>
 public static class RealEstateGeneratorExtensions
 {
     /// <summary>
-    /// Метод для облегчения генерации record-ов
+    /// Configures the faker to instantiate objects without calling their constructors
+    /// Useful when generating DTOs with required properties
     /// </summary>
-    /// <typeparam name="T">Параметр типа генерируемых данных</typeparam>
-    /// <param name="faker">Генератор данных</param>
+    /// <typeparam name="T">Type of the object being generated</typeparam>
+    /// <param name="faker">The faker instance to configure</param>
+    /// <returns>Configured <see cref="Faker{T}"/> instance</returns>
     public static Faker<T> WithRecord<T>(this Faker<T> faker) where T : class =>
         faker.CustomInstantiator(_ => RuntimeHelpers.GetUninitializedObject(typeof(T)) as T);
 }

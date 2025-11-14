@@ -5,12 +5,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace RealEstateAgency.Generator.Services;
+
 /// <summary>
-/// Служба для генерации и отправки DTO объектов недвижимости через заданные интервалы
+/// Background service that generates real estate object data in batches
+/// and publishes them using <see cref="IProducerService"/>
 /// </summary>
-/// <param name="configuration">Конфигурация</param>
-/// <param name="scopeFactory">Фабрика контекста</param>
-/// <param name="logger">Логгер</param>
 public class RealEstateObjectGeneratorService(
     IConfiguration configuration,
     IServiceScopeFactory scopeFactory,
@@ -20,7 +19,11 @@ public class RealEstateObjectGeneratorService(
     private readonly string _payloadLimit = configuration.GetSection("Generator:RealEstateObject")["PayloadLimit"] ?? throw new KeyNotFoundException("PayloadLimit section of Generator:RealEstateObject is missing");
     private readonly string _waitTime = configuration.GetSection("Generator:RealEstateObject")["WaitTime"] ?? throw new KeyNotFoundException("WaitTime section of Generator:RealEstateObject is missing");
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Generates random real estate object batches and sends them to the producer
+    /// service until the configured payload limit is reached
+    /// </summary>
+    /// <param name="stoppingToken">Token used to cancel the execution loop</param>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         logger.LogInformation("RealEstateObjectGeneratorService started with {batch} batch size, {limit} payload limit, {wait}s wait time", _batchSize, _payloadLimit, _waitTime);

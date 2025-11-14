@@ -1,5 +1,4 @@
 ﻿using MapsterMapper;
-using RealEstateAgency.Application.Contracts;
 using RealEstateAgency.Application.Contracts.RealEstateObject;
 using RealEstateAgency.Application.Contracts.Request;
 using RealEstateAgency.Domain;

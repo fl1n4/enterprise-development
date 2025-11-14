@@ -8,7 +8,8 @@ using System.Text.Json;
 namespace RealEstateAgency.Generator.RabbitMq.Host;
 
 /// <summary>
-/// Имплементация для отправки DTO через очередь RabbitMQ с exchange и routing keys.
+/// Provides functionality for publishing client, real estate object,
+/// and request data batches to RabbitMQ using a direct exchange
 /// </summary>
 public class RealEstateAgencyRabbitMqProducer(
     IConfiguration configuration,
@@ -22,6 +23,10 @@ public class RealEstateAgencyRabbitMqProducer(
 
     private const string ExchangeName = "real-estate.exchange";
 
+    /// <summary>
+    /// Ensures that the required RabbitMQ exchange and queue exist
+    /// and binds all relevant routing keys
+    /// </summary>
     private void EnsureExchangeAndQueue(IModel channel)
     {
         channel.ExchangeDeclare(exchange: ExchangeName, type: ExchangeType.Direct, durable: true);
@@ -32,6 +37,11 @@ public class RealEstateAgencyRabbitMqProducer(
         channel.QueueBind(_queueName, ExchangeName, "request.data");
     }
 
+    /// <summary>
+    /// Publishes a batch of clients to RabbitMQ using the <c>client.info</c> routing key
+    /// </summary>
+    /// <param name="batch">A collection of client DTOs to send</param>
+    /// <returns>A completed <see cref="Task"/> once the operation is finished</returns>
     public Task SendClientsAsync(IList<ClientCreateUpdateDto> batch)
     {
         try
@@ -58,6 +68,12 @@ public class RealEstateAgencyRabbitMqProducer(
         }
     }
 
+    /// <summary>
+    /// Publishes a batch of real estate objects to RabbitMQ
+    /// using the <c>real-estate.object</c> routing key
+    /// </summary>
+    /// <param name="batch">A collection of real estate object DTOs to send</param>
+    /// <returns>A completed <see cref="Task"/> once the operation is finished</returns>
     public Task SendRealEstateObjectsAsync(IList<RealEstateObjectCreateUpdateDto> batch)
     {
         try
@@ -84,6 +100,11 @@ public class RealEstateAgencyRabbitMqProducer(
         }
     }
 
+    /// <summary>
+    /// Publishes a batch of requests to RabbitMQ using the <c>request.data</c> routing key
+    /// </summary>
+    /// <param name="batch">A collection of request DTOs to send</param>
+    /// <returns>A completed <see cref="Task"/> once the operation is finished</returns>
     public Task SendRequestsAsync(IList<RequestCreateUpdateDto> batch)
     {
         try

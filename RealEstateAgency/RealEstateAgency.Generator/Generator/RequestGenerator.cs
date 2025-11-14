@@ -3,8 +3,16 @@ using RealEstateAgency.Application.Contracts.Request;
 using RealEstateAgency.Domain.Enums;
 namespace RealEstateAgency.Generator.Generator;
 
+/// <summary>
+/// Provides functionality for generating random request data for testing
+/// </summary>
 public static class RequestGenerator
 {
+    /// <summary>
+    /// Generates a collection of random requests using predefined faker rules
+    /// </summary>
+    /// <param name="count">Number of requests to generate</param>
+    /// <returns>List of randomly generated <see cref="RequestCreateUpdateDto"/> objects</returns>
     public static List<RequestCreateUpdateDto> GenerateRequests(int count) =>
         new Faker<RequestCreateUpdateDto>()
             .WithRecord()

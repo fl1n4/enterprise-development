@@ -1,6 +1,4 @@
-﻿using RealEstateAgency.Application.Contracts.Client;
-using RealEstateAgency.Application.Contracts.RealEstateObject;
-using RealEstateAgency.Domain.Enums;
+﻿using RealEstateAgency.Domain.Enums;
 
 namespace RealEstateAgency.Application.Contracts.Request;
 
