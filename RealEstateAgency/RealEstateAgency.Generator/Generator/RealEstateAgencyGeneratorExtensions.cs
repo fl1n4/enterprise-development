@@ -16,5 +16,5 @@ public static class RealEstateGeneratorExtensions
     /// <param name="faker">The faker instance to configure</param>
     /// <returns>Configured <see cref="Faker{T}"/> instance</returns>
     public static Faker<T> WithRecord<T>(this Faker<T> faker) where T : class =>
-        faker.CustomInstantiator(_ => RuntimeHelpers.GetUninitializedObject(typeof(T)) as T);
+        faker.CustomInstantiator(_ => (T)RuntimeHelpers.GetUninitializedObject(typeof(T)));
 }
