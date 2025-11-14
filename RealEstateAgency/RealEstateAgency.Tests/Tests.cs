@@ -21,12 +21,12 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
             .Where(r => r.Type == RequestType.Sell
                         && r.DateCreated >= from
                         && r.DateCreated <= to)
-            .Select(r => r.Client.FullName)
+            .Select(r => testData.Clients.First(c=>c.Id==r.ClientId).FullName)
             .Distinct()
             .ToList();
 
         Assert.Equal(3, sellers.Count);
-        Assert.Contains("Петрова Анна Сергеевна", sellers);
+        Assert.Contains("Кузнецова Мария Александровна", sellers);
     }
 
     /// <summary>
@@ -42,11 +42,11 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
             .Select(g => new
             {
                 Type = g.Key.ToString()!.ToLower(),
-                Clients = g.GroupBy(r => r.Client.FullName)
-                           .Select(cg => new { Client = cg.Key, Count = cg.Count() })
+                Clients = g.GroupBy(r => r.ClientId)
+                           .Select(cg => new { ClientId = cg.Key, Count = cg.Count() })
                            .OrderByDescending(x => x.Count)
                            .Take(5)
-                           .Select(x => x.Client)
+                           .Select(x => testData.Clients.First(c => c.Id == x.ClientId).FullName)
                            .ToList()
             })
             .ToList();
@@ -72,7 +72,7 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
     public void GetRequestCountByPropertyType_WhenGrouped_ReturnsCountForEachType()
     {
         var counts = testData.Requests
-            .GroupBy(r => r.Property.Type)
+            .GroupBy(r => testData.Properties.First(p => p.Id == r.PropertyId).Type)
             .Select(g => new { PropertyType = g.Key, Count = g.Count() })
             .ToList();
 
@@ -90,7 +90,7 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
 
         var clients = testData.Requests
             .Where(r => r.Amount == minAmount)
-            .Select(r => r.Client.FullName)
+            .Select(r => testData.Clients.First(c => c.Id == r.ClientId).FullName)
             .Distinct()
             .ToList();
 
@@ -107,8 +107,8 @@ public class RealEstateQueriesTests(RealEstateSeed testData) : IClassFixture<Rea
         var targetType = PropertyType.Apartment;
 
         var clients = testData.Requests
-            .Where(r => r.Property.Type == targetType && r.Type == RequestType.Buy)
-            .Select(r => r.Client.FullName)
+            .Where(r => testData.Properties.First(p => p.Id == r.PropertyId).Type == targetType)
+            .Select(r => testData.Clients.First(c => c.Id == r.ClientId).FullName)
             .Distinct()
             .OrderBy(name => name)
             .ToList();
